@@ -38,55 +38,128 @@ app()->booted(function () {
                 'value' => '#ff2b4a',
             ],
         ])
-        ->setField([
-            'id'         => 'company_name',
+         ->setField([
+            'id'         => 'secondary_color',
             'section_id' => 'opt-text-subsection-general',
+            'type'       => 'customColor',
+            'label'      => __('Secondary color'),
+            'attributes' => [
+                'name'  => 'secondary_color',
+                'value' => '#ff2b4a',
+            ],
+         ])
+         ->setField([
+            'id'         => 'heading_color',
+            'section_id' => 'opt-text-subsection-general',
+            'type'       => 'customColor',
+            'label'      => __('Heading color'),
+            'attributes' => [
+                'name'  => 'heading_color',
+                'value' => '#ff2b4a',
+            ],
+         ])
+         ->setField([
+            'id'         => 'paragraph_color',
+            'section_id' => 'opt-text-subsection-general',
+            'type'       => 'customColor',
+            'label'      => __('Paragraph color'),
+            'attributes' => [
+                'name'  => 'paragraph_color',
+                'value' => '#ff2b4a',
+            ],
+         ])
+         ->setField([
+            'id'         => 'background_color',
+            'section_id' => 'opt-text-subsection-general',
+            'type'       => 'customColor',
+            'label'      => __('Background color'),
+            'attributes' => [
+                'name'  => 'background_color',
+                'value' => '#ffffff',
+            ],
+         ])
+         ->setSection([
+            'id' => 'opt-text-subsection-company',
+            'title' => __('Company'),
+            'desc' => __('Company settings of the theme'),
+            'icon' => 'fa fa-building',
+         ])
+         ->setField([
+            'id'         => 'company_name',
+            'section_id' => 'opt-text-subsection-company',
             'type'       => 'text',
-            'label'      => __('Company Name'),
+            'label'      => __('Company name'),
             'attributes' => [
                 'name'  => 'company_name',
-                'placeholder' => __('Change company name'),
-            ],
-        ])
+                'value' => __('Your Company'),
+                'options' => [
+                    'class'        => 'form-control',
+                    'placeholder'  => __('Change company name'),
+                    'data-counter' => 250,
+                ],
+            ]
+         ])
         ->setField([
             'id'         => 'company_address',
-            'section_id' => 'opt-text-subsection-general',
+            'section_id' => 'opt-text-subsection-company',
             'type'       => 'text',
             'label'      => __('Company address'),
             'attributes' => [
                 'name'  => 'company_address',
-                'placeholder' => __('Change company address'),
-            ],
+                'value' => __('Your company address'),
+                'options' => [
+                    'class'        => 'form-control',
+                    'placeholder'  => __('Change company address'),
+                    'data-counter' => 250,
+                ],
+            ]
         ])
         ->setField([
             'id'         => 'company_phone',
-            'section_id' => 'opt-text-subsection-general',
+            'section_id' => 'opt-text-subsection-company',
             'type'       => 'text',
             'label'      => __('Company phone'),
             'attributes' => [
                 'name'  => 'company_phone',
-                'placeholder' => __('Change company phone'),
-            ],
+                'value' => __('Your company phone'),
+                'options' => [
+                    'class'        => 'form-control',
+                    'placeholder'  => __('Change company phone'),
+                    'data-counter' => 250,
+                ],
+            ]
         ])
         ->setField([
             'id'         => 'company_email',
-            'section_id' => 'opt-text-subsection-general',
+            'section_id' => 'opt-text-subsection-company',
             'type'       => 'text',
             'label'      => __('Company email'),
             'attributes' => [
                 'name'  => 'company_email',
-                'placeholder' => __('Change company email'),
-            ],
-        ])
-        ->setField([
-            'id'         => 'company_facebook',
-            'section_id' => 'opt-text-subsection-general',
-            'type'       => 'text',
-            'label'      => __('Company Facebook'),
+                'value' => __('Your company email'),
+                'options' => [
+                    'class'        => 'form-control',
+                    'placeholder'  => __('Change company email'),
+                    'data-counter' => 250,
+                ],
+            ]
+         ])
+         ->setField([
+            'id'         => 'company_map',
+            'section_id' => 'opt-text-subsection-company',
+            'type'       => 'textarea',
+            'label'      => __('Company map'),
             'attributes' => [
-                'name'  => 'company_facebook',
-                'placeholder' => __('Change company Facebook'),
-            ],
-        ])
-        ;
+                'name'  => 'company_email',
+                'value' => __('Your company email'),
+                'options' => [
+                    'class'        => 'form-control',
+                    'placeholder'  => __('Change company email'),
+                    'data-counter' => 250,
+                ],
+            ]
+         ])
+                 
+         ;
+        
 });
