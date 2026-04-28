@@ -67,7 +67,7 @@ return [
 
 
             $theme->asset()->container('footer')
-            ->usePath()->add('query', 'js/query-3.7.1.min.js')
+            ->usePath()->add('query', 'js/jquery-3.7.1.min.js')
             ->usePath()->add('slick-js', 'js/slick.min.js')
             ->usePath()->add('viewport', 'js/viewport.jquery.js')
             ->usePath()->add('bootstrap-js', 'js/bootstrap.bundle.min.js')
@@ -80,7 +80,7 @@ return [
             ->usePath()->add('splitting', 'js/splitting.js')
             ->usePath()->add('wow', 'js/wow.min.js')
             ->usePath()->add('splitting-animation', 'js/splitting-animation.js')
-            ->usePath()->add('template-settings', 'js/template-settings.js.js')
+            ->usePath()->add('template-settings', 'js/template-settings.js')
             ->usePath()->add('main', 'js/main.js');
 
             if (function_exists('shortcode')) {

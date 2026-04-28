@@ -37,5 +37,56 @@ app()->booted(function () {
                 'name'  => 'primary_color',
                 'value' => '#ff2b4a',
             ],
-        ]);
+        ])
+        ->setField([
+            'id'         => 'company_name',
+            'section_id' => 'opt-text-subsection-general',
+            'type'       => 'text',
+            'label'      => __('Company Name'),
+            'attributes' => [
+                'name'  => 'company_name',
+                'placeholder' => __('Change company name'),
+            ],
+        ])
+        ->setField([
+            'id'         => 'company_address',
+            'section_id' => 'opt-text-subsection-general',
+            'type'       => 'text',
+            'label'      => __('Company address'),
+            'attributes' => [
+                'name'  => 'company_address',
+                'placeholder' => __('Change company address'),
+            ],
+        ])
+        ->setField([
+            'id'         => 'company_phone',
+            'section_id' => 'opt-text-subsection-general',
+            'type'       => 'text',
+            'label'      => __('Company phone'),
+            'attributes' => [
+                'name'  => 'company_phone',
+                'placeholder' => __('Change company phone'),
+            ],
+        ])
+        ->setField([
+            'id'         => 'company_email',
+            'section_id' => 'opt-text-subsection-general',
+            'type'       => 'text',
+            'label'      => __('Company email'),
+            'attributes' => [
+                'name'  => 'company_email',
+                'placeholder' => __('Change company email'),
+            ],
+        ])
+        ->setField([
+            'id'         => 'company_facebook',
+            'section_id' => 'opt-text-subsection-general',
+            'type'       => 'text',
+            'label'      => __('Company Facebook'),
+            'attributes' => [
+                'name'  => 'company_facebook',
+                'placeholder' => __('Change company Facebook'),
+            ],
+        ])
+        ;
 });
