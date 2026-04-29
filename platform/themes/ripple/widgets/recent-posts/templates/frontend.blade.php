@@ -1,4 +1,4 @@
-@if (is_plugin_active('blog') && $posts->isNotEmpty())
+@if ($posts->isNotEmpty())
     @if ($sidebar == 'footer_sidebar')
         <div class="col-lg-3 col-md-3 col-sm-6 col-12">
             <div class="widget widget--transparent widget__footer">
@@ -37,7 +37,7 @@
                                         data-number-line="2"
                                     >{{ $post->name }}</a></h4>
                                 <div class="post__meta"><span
-                                        class="post__created-at">{{ $post->created_at->translatedFormat('M d, Y') }}</span>
+                                        class="post__created-at">{{ Theme::formatDate($post->created_at) }}</span>
                                 </div>
                             </header>
                         </article>

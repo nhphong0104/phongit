@@ -8,15 +8,21 @@ use Botble\Base\Facades\EmailHandler;
 use Botble\Base\Facades\PanelSectionManager;
 use Botble\Base\Forms\FormAbstract;
 use Botble\Base\PanelSections\PanelSectionItem;
-use Botble\Base\Rules\OnOffRule;
 use Botble\Base\Supports\Language as BaseLanguage;
 use Botble\Base\Supports\ServiceProvider;
 use Botble\Base\Traits\LoadAndPublishDataTrait;
-use Botble\Captcha\Forms\CaptchaSettingForm;
 use Botble\Language\Facades\Language;
 use Botble\LanguageAdvanced\Supports\LanguageAdvancedManager;
+use Botble\Member\Forms\Fronts\Auth\ForgotPasswordForm;
+use Botble\Member\Forms\Fronts\Auth\LoginForm;
+use Botble\Member\Forms\Fronts\Auth\RegisterForm;
+use Botble\Member\Forms\Fronts\Auth\ResetPasswordForm;
 use Botble\Member\Http\Middleware\RedirectIfMember;
 use Botble\Member\Http\Middleware\RedirectIfNotMember;
+use Botble\Member\Http\Requests\Fronts\Auth\ForgotPasswordRequest;
+use Botble\Member\Http\Requests\Fronts\Auth\LoginRequest;
+use Botble\Member\Http\Requests\Fronts\Auth\RegisterRequest;
+use Botble\Member\Http\Requests\Fronts\Auth\ResetPasswordRequest;
 use Botble\Member\Models\Member;
 use Botble\Member\Models\MemberActivityLog;
 use Botble\Member\Repositories\Eloquent\MemberActivityLogRepository;
@@ -27,6 +33,7 @@ use Botble\Setting\PanelSections\SettingOthersPanelSection;
 use Botble\Slug\Facades\SlugHelper;
 use Botble\SocialLogin\Facades\SocialService;
 use Botble\Theme\Events\RenderingThemeOptionSettings;
+use Botble\Theme\FormFrontManager;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -177,21 +184,9 @@ class MemberServiceProvider extends ServiceProvider
 
         $this->app->register(EventServiceProvider::class);
 
-        if (is_plugin_active('language') && is_plugin_active('language-advanced')) {
-            $this->loadRoutes(['language-advanced']);
-
-            FormAbstract::beforeRendering(function (FormAbstract $form) {
-                if ($form instanceof CaptchaSettingForm) {
-                    $form
-                        ->addAfter('captcha_secret', 'member_enable_recaptcha_in_register_page', 'onOffCheckbox', [
-                            'label' => trans('plugins/member::settings.enable_recaptcha_in_register_page'),
-                            'value' => setting('member_enable_recaptcha_in_register_page', false),
-                        ])
-                        ->addAfter('open_fieldset_math_captcha_setting', 'member_enable_math_captcha_in_register_page', 'onOffCheckbox', [
-                            'label' => trans('plugins/member::settings.enable_math_captcha_in_register_page'),
-                            'value' => setting('member_enable_math_captcha_in_register_page', false),
-                        ]);
-                }
+        FormAbstract::beforeRendering(function (FormAbstract $form) {
+            if (is_plugin_active('language') && is_plugin_active('language-advanced')) {
+                $this->loadRoutes(['language-advanced']);
 
                 $adminLocale = Language::getCurrentAdminLocaleCode();
 
@@ -200,10 +195,12 @@ class MemberServiceProvider extends ServiceProvider
                 $model = $form->getModel();
 
                 if (
+                    Route::current() &&
                     in_array('member', Route::current()->middleware()) &&
                     Auth::guard('member')->check() &&
                     ! $isDefaultLocale &&
                     $model &&
+                    $model instanceof Member &&
                     $model->getKey() &&
                     LanguageAdvancedManager::isSupported($model)
                 ) {
@@ -211,24 +208,19 @@ class MemberServiceProvider extends ServiceProvider
 
                     $form->setFormOption('url', route('public.member.language-advanced.save', $model->getKey()) . $refLang);
                 }
+            }
 
-                return $form;
-            }, 9999);
-        }
-
-        add_filter('captcha_settings_validation_rules', [$this, 'addMemberSettingRules'], 99);
+            return $form;
+        }, 9999);
 
         $this->app['events']->listen(RenderingThemeOptionSettings::class, function () {
             add_action(RENDERING_THEME_OPTIONS_PAGE, [$this, 'addThemeOptions'], 35);
         });
-    }
 
-    public function addMemberSettingRules(array $rules): array
-    {
-        return array_merge($rules, [
-            'member_enable_recaptcha_in_register_page' => $onOffRule = new OnOffRule(),
-            'member_enable_math_captcha_in_register_page' => $onOffRule,
-        ]);
+        FormFrontManager::register(ForgotPasswordForm::class, ForgotPasswordRequest::class);
+        FormFrontManager::register(LoginForm::class, LoginRequest::class);
+        FormFrontManager::register(RegisterForm::class, RegisterRequest::class);
+        FormFrontManager::register(ResetPasswordForm::class, ResetPasswordRequest::class);
     }
 
     public function setInAdmin(bool $isInAdmin): bool
@@ -239,7 +231,7 @@ class MemberServiceProvider extends ServiceProvider
             $segment = request()->segment(2);
         }
 
-        return $segment === 'member' || $isInAdmin;
+        return $segment === 'account' || $isInAdmin;
     }
 
     public function addThemeOptions(): void

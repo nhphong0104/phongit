@@ -30,7 +30,7 @@ class CustomFieldTable extends TableAbstract
                 HeaderAction::make('import-field-group')
                     ->label(trans('plugins/custom-field::base.import'))
                     ->icon('ti ti-cloud-upload')
-                    ->route('custom-fields.create')
+                    ->url('#')
                     ->attributes(['class' => 'custom-import-button']),
             ])
             ->setView('plugins/custom-field::list')

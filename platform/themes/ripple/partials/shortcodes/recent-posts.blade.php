@@ -1,4 +1,4 @@
-<section class="section pt-50 pb-50">
+<section class="section pt-50 pb-50" @if ($shortcode->background_color) style="background-color: {{ $shortcode->background_color }} !important;" @endif>
     <div class="container">
         <div class="row">
             @php
@@ -67,7 +67,7 @@
                                                                 title="{{ $post->name }}"
                                                             >{{ $post->name }}</a></h3>
                                                         <div class="post__meta"><span
-                                                                class="post__created-at">{{ $post->created_at->translatedFormat('M d, Y') }}</span>
+                                                                class="post__created-at">{{ Theme::formatDate($post->created_at) }}</span>
                                                         </div>
                                                     </header>
                                                 </div>

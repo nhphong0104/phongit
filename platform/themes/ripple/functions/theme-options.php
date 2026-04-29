@@ -5,16 +5,6 @@ use Botble\Theme\Events\RenderingThemeOptionSettings;
 app('events')->listen(RenderingThemeOptionSettings::class, function () {
     theme_option()
         ->setField([
-            'id' => 'primary_font',
-            'section_id' => 'opt-text-subsection-general',
-            'type' => 'googleFonts',
-            'label' => __('Primary font'),
-            'attributes' => [
-                'name' => 'primary_font',
-                'value' => 'Roboto',
-            ],
-        ])
-        ->setField([
             'id' => 'primary_color',
             'section_id' => 'opt-text-subsection-general',
             'type' => 'customColor',

@@ -9,7 +9,6 @@ use Botble\Blog\Forms\PostForm as BasePostForm;
 use Botble\Blog\Models\Post;
 use Botble\Blog\Models\Tag;
 use Botble\Member\Forms\Fields\CustomEditorField;
-use Botble\Member\Forms\Fields\CustomImageField;
 use Botble\Member\Http\Requests\PostRequest;
 
 class PostForm extends BasePostForm
@@ -24,7 +23,6 @@ class PostForm extends BasePostForm
             ->hasFiles()
             ->setValidatorClass(PostRequest::class)
             ->setBreakFieldPoint('categories[]')
-            ->addCustomField('customImage', CustomImageField::class)
             ->remove('status')
             ->remove('is_featured')
             ->remove('content')

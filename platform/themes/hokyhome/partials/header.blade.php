@@ -11,7 +11,10 @@
             <div class="offcanvas__content">
                 <div class="offcanvas__top mb-5 d-flex justify-content-between align-items-center">
                     <div class="offcanvas__logo">
-                        <a href="index.html">
+                        <a href="{{ BaseHelper::getHomepageUrl() }}">
+                            @if ($logo = theme_option('logo'))
+                                {{ RvMedia::image($logo, theme_option('site_title')) }}
+                            @endif
                             <img src="assets/img/logo/black-logo.svg" alt="logo-img">
                         </a>
                     </div>
@@ -27,7 +30,7 @@
                 </p>
                 <div class="mobile-menu fix mb-3"></div>
                 <div class="offcanvas__contact">
-                    <h4>Contact Info</h4>
+                    <h4>{{ __('Contact Info') }}</h4>
                     <ul>
                         <li class="d-flex align-items-center">
                             <div class="offcanvas__contact-icon">
@@ -61,7 +64,7 @@
                     <a href="tel:{{ theme_option('company_phone') }}" class="gt-theme-btn">
                         <span class="gt-icon-btn"><i class="icon-icon-1"></i></span>
                         <span class="gt-text-btn">
-                            <span class="gt-text-2">Liên hệ ngay</span>
+                            <span class="gt-text-2">{{ __('Contact Now') }}</span>
                         </span>
                     </a>
                     <div class="social-icon d-flex align-items-center">
@@ -119,9 +122,9 @@
                             </div>
                         </div>
                     </div>
-                    <a href="contact.html" class="gt-theme-btn">
+                    <a href="tel:{{ theme_option('company_phone') }}" class="gt-theme-btn">
                         <span class="gt-text-btn">
-                            <span class="gt-text-2">get a quote</span>
+                            <span class="gt-text-2">{{ __('Contact Now') }}</span>
                         </span>
                     </a>
                 </div>

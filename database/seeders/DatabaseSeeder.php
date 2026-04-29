@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Botble\ACL\Database\Seeders\UserSeeder;
+use Botble\Base\Facades\BaseHelper;
 use Botble\Base\Supports\BaseSeeder;
 use Botble\Block\Database\Seeders\StaticBlockSeeder;
 use Botble\Contact\Database\Seeders\ContactSeeder;
@@ -13,6 +14,8 @@ class DatabaseSeeder extends BaseSeeder
     public function run(): void
     {
         $this->prepareRun();
+
+        BaseHelper::maximumExecutionTimeAndMemoryLimit();
 
         $this->call(UserSeeder::class);
 

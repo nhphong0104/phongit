@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html {!! Theme::htmlAttributes() !!}>
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -63,9 +63,7 @@
         <div class="container">
             <div class="page-header__left">
                 <a href="{{ BaseHelper::getHomepageUrl() }}" class="page-logo">
-                    @if ($logo = theme_option('logo'))
-                        {{ RvMedia::image($logo, theme_option('site_title'), attributes: ['height' => 50]) }}
-                    @endif
+                    {{ Theme::getLogoImage(['height' => 50]) }}
                 </a>
             </div>
             <div class="page-header__right">

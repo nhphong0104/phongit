@@ -98,12 +98,12 @@ class Member extends BaseModel implements
 
     protected function firstName(): Attribute
     {
-        return Attribute::get(fn ($value) => ucfirst((string)$value));
+        return Attribute::get(fn ($value) => ucfirst((string) $value));
     }
 
     protected function lastName(): Attribute
     {
-        return Attribute::get(fn ($value) => ucfirst((string)$value));
+        return Attribute::get(fn ($value) => ucfirst((string) $value));
     }
 
     protected function name(): Attribute

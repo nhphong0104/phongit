@@ -11,6 +11,10 @@ return [
     'confirmation_info' => 'Please confirm your email address.',
     'confirmation_resent' => 'We sent you another confirmation email. You should receive it shortly.',
     'form' => [
+        'login_title' => 'Member login form',
+        'register_title' => 'Member registration form',
+        'reset_password_title' => 'Member reset password form',
+        'forgot_password_title' => 'Member forgot password form',
         'email' => 'Email',
         'password' => 'Password',
         'password_confirmation' => 'Password confirmation',

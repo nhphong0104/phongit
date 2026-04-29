@@ -62,7 +62,7 @@ class HookServiceProvider extends ServiceProvider
         }
     }
 
-    protected function render(string $reference, int|string|null $id): string|null
+    protected function render(string $reference, int|string|null $id): ?string
     {
         $customFieldBoxes = get_custom_field_boxes($reference, $id);
 

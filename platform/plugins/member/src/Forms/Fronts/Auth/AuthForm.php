@@ -3,10 +3,10 @@
 namespace Botble\Member\Forms\Fronts\Auth;
 
 use Botble\Base\Forms\Fields\HtmlField;
-use Botble\Base\Forms\FormAbstract;
 use Botble\Theme\Facades\Theme;
+use Botble\Theme\FormFront;
 
-abstract class AuthForm extends FormAbstract
+abstract class AuthForm extends FormFront
 {
     public function setup(): void
     {

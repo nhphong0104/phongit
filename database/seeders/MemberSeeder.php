@@ -2,42 +2,41 @@
 
 namespace Database\Seeders;
 
+use Botble\Base\Models\BaseModel;
 use Botble\Member\Database\Seeders\MemberSeeder as BaseMemberSeeder;
-use Botble\Member\Models\Member;
 use Illuminate\Support\Facades\Hash;
 
 class MemberSeeder extends BaseMemberSeeder
 {
-    public function run(): void
+    protected function getMemberData(): array
     {
-        parent::run();
-
         $files = $this->uploadFiles('members');
 
-        $faker = $this->fake();
         $now = $this->now();
 
-        Member::query()->create([
+        $data = parent::getMemberData();
+
+        $data[] = [
+            'id' => BaseModel::getTypeOfId() === 'BIGINT' ? 11 : $this->fake()->uuid(),
             'first_name' => 'John',
             'last_name' => 'Smith',
             'email' => 'john.smith@botble.com',
             'password' => Hash::make('12345678'),
-            'dob' => $faker->dateTime(),
-            'phone' => $faker->phoneNumber(),
-            'avatar_id' => ! $files[0]['error'] ? $files[0]['data']->id : 0,
-            'description' => $faker->realText(30),
             'confirmed_at' => $now,
-        ]);
+            'created_at' => $now,
+            'updated_at' => $now,
+        ];
 
-        foreach (Member::query()->get() as $index => $member) {
-            if (! isset($files[$index + 1])) {
+        foreach ($data as $index => $item) {
+            if (! isset($files[$index])) {
                 continue;
             }
 
-            $file = $files[$index + 1];
+            $file = $files[$index];
 
-            $member->avatar_id = ! $file['error'] ? $file['data']->id : 0;
-            $member->save();
+            $data[$index]['avatar_id'] = $file['error'] ? 0 : $file['data']->id;
         }
+
+        return $data;
     }
 }

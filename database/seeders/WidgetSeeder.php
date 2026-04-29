@@ -44,13 +44,13 @@ class WidgetSeeder extends BaseSeeder
                 ],
             ],
             [
-                'widget_id' => 'CustomMenuWidget',
+                'widget_id' => 'BlogCategoriesWidget',
                 'sidebar_id' => 'primary_sidebar',
                 'position' => 1,
                 'data' => [
-                    'id' => 'CustomMenuWidget',
+                    'id' => 'BlogCategoriesWidget',
                     'name' => 'Categories',
-                    'menu_id' => 'featured-categories',
+                    'display_posts_count' => 'yes',
                 ],
             ],
             [

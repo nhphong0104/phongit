@@ -126,7 +126,7 @@ class FieldGroupRepository extends RepositoriesAbstract implements FieldGroupInt
             $cloned = $items;
             foreach ($cloned as $keyItem => $item) {
                 foreach ($row as $currentData) {
-                    if ((int)$item['id'] !== (int)$currentData['field_item_id']) {
+                    if ((int) $item['id'] !== (int) $currentData['field_item_id']) {
                         continue;
                     }
 
@@ -148,7 +148,7 @@ class FieldGroupRepository extends RepositoriesAbstract implements FieldGroupInt
     protected function getFieldItemValue(
         FieldItem $fieldItem,
         string|object|null $morphClass,
-        string|null $morphId
+        ?string $morphId
     ): string|array|null {
         if (is_object($morphClass)) {
             $morphClass = get_class($morphClass);
@@ -170,7 +170,7 @@ class FieldGroupRepository extends RepositoriesAbstract implements FieldGroupInt
 
         if ($result) {
             if (Arr::get($data, 'group_items')) {
-                $this->editGroupItems(json_decode((string)$data['group_items'], true), $result->id);
+                $this->editGroupItems(json_decode((string) $data['group_items'], true), $result->id);
             }
         }
 
@@ -211,11 +211,11 @@ class FieldGroupRepository extends RepositoriesAbstract implements FieldGroupInt
 
         if ($result) {
             if (Arr::get($data, 'deleted_items')) {
-                $this->fieldItemRepository->deleteFieldItem(json_decode((string)$data['deleted_items'], true));
+                $this->fieldItemRepository->deleteFieldItem(json_decode((string) $data['deleted_items'], true));
             }
 
             if (Arr::get($data, 'group_items')) {
-                $this->editGroupItems(json_decode((string)$data['group_items'], true), $result->id);
+                $this->editGroupItems(json_decode((string) $data['group_items'], true), $result->id);
             }
         }
 
@@ -228,11 +228,11 @@ class FieldGroupRepository extends RepositoriesAbstract implements FieldGroupInt
 
         if ($result) {
             if (Arr::get($data, 'deleted_items')) {
-                $this->fieldItemRepository->deleteFieldItem(json_decode((string)$data['deleted_items'], true));
+                $this->fieldItemRepository->deleteFieldItem(json_decode((string) $data['deleted_items'], true));
             }
 
             if (Arr::get($data, 'group_items')) {
-                $this->editGroupItems(json_decode((string)$data['group_items'], true), $result->id);
+                $this->editGroupItems(json_decode((string) $data['group_items'], true), $result->id);
             }
         }
 

@@ -6,5 +6,5 @@ use Botble\Support\Repositories\Interfaces\RepositoryInterface;
 
 interface BlockInterface extends RepositoryInterface
 {
-    public function createSlug(string|null $name, int|string|null $id): string;
+    public function createSlug(?string $name, int|string|null $id): string;
 }

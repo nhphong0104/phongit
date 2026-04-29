@@ -6,7 +6,7 @@
 @endif
 
 <span class="created_at">
-    {!! BaseHelper::renderIcon('ti ti-clock') !!} {{ $post->created_at->translatedFormat('M d Y') }}
+    {!! BaseHelper::renderIcon('ti ti-clock') !!} {{ Theme::formatDate($post->created_at) }}
 </span>
 
 @if ($post->author->name)

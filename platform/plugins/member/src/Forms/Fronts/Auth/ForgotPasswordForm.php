@@ -10,6 +10,11 @@ use Botble\Member\Http\Requests\Fronts\Auth\ForgotPasswordRequest;
 
 class ForgotPasswordForm extends AuthForm
 {
+    public static function formTitle(): string
+    {
+        return trans('plugins/member::member.form.forgot_password_title');
+    }
+
     public function setup(): void
     {
         parent::setup();

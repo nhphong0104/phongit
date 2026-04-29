@@ -7,6 +7,7 @@ use Botble\ACL\Traits\LogoutGuardTrait;
 use Botble\Base\Facades\BaseHelper;
 use Botble\Base\Http\Controllers\BaseController;
 use Botble\Member\Forms\Fronts\Auth\LoginForm;
+use Botble\Member\Http\Requests\Fronts\Auth\LoginRequest;
 use Botble\SeoHelper\Facades\SeoHelper;
 use Botble\Theme\Facades\Theme;
 use Illuminate\Http\Request;
@@ -35,7 +36,7 @@ class LoginController extends BaseController
         )->render();
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
         $this->validateLogin($request);
 

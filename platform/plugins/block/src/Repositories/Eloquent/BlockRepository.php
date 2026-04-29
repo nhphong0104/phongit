@@ -8,7 +8,7 @@ use Botble\Support\Repositories\Eloquent\RepositoriesAbstract;
 
 class BlockRepository extends RepositoriesAbstract implements BlockInterface
 {
-    public function createSlug(string|null $name, int|string|null $id): string
+    public function createSlug(?string $name, int|string|null $id): string
     {
         return Block::createSlug($name, $id, 'alias');
     }

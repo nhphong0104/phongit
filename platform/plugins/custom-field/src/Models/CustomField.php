@@ -38,7 +38,7 @@ class CustomField extends BaseModel
             $value = $this->value;
 
             if ($this->type === 'repeater') {
-                $value = json_decode((string)$this->value, true);
+                $value = json_decode((string) $this->value, true);
             }
 
             return $value;

@@ -27,7 +27,7 @@ if (! function_exists('response_with_messages')) {
         return [
             'error' => $error,
             'response_code' => $responseCode ?: 200,
-            'messages' => (array)$messages,
+            'messages' => (array) $messages,
             'data' => $data,
         ];
     }

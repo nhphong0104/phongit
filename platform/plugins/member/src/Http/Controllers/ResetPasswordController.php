@@ -5,6 +5,7 @@ namespace Botble\Member\Http\Controllers;
 use Botble\ACL\Traits\ResetsPasswords;
 use Botble\Base\Http\Controllers\BaseController;
 use Botble\Member\Forms\Fronts\Auth\ResetPasswordForm;
+use Botble\Member\Http\Requests\Fronts\Auth\ResetPasswordRequest;
 use Botble\SeoHelper\Facades\SeoHelper;
 use Botble\Theme\Facades\Theme;
 use Illuminate\Http\Request;
@@ -12,7 +13,9 @@ use Illuminate\Support\Facades\Password;
 
 class ResetPasswordController extends BaseController
 {
-    use ResetsPasswords;
+    use ResetsPasswords {
+        ResetsPasswords::reset as parentReset;
+    }
 
     public string $redirectTo = '/';
 
@@ -34,6 +37,11 @@ class ResetPasswordController extends BaseController
             ],
             'plugins/member::themes.auth.passwords.reset'
         )->render();
+    }
+
+    public function reset(ResetPasswordRequest $request)
+    {
+        return $this->parentReset($request);
     }
 
     public function broker()

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Botble\Base\Facades\Html;
 use Botble\Base\Supports\BaseSeeder;
+use Botble\Blog\Models\Category;
 use Botble\CookieConsent\Database\Traits\HasCookieConsentSeeder;
 use Botble\Page\Database\Traits\HasPageSeeder;
 
@@ -22,8 +23,8 @@ class PageSeeder extends BaseSeeder
                 'content' =>
                     Html::tag('div', '[featured-posts][/featured-posts]') .
                     Html::tag('div', '[recent-posts title="What\'s new?"][/recent-posts]') .
-                    Html::tag('div', '[featured-categories-posts title="Best for you" category_id="2"][/featured-categories-posts]') .
-                    Html::tag('div', '[all-galleries limit="8" title="Galleries"][/all-galleries]')
+                    Html::tag('div', '[featured-categories-posts title="Best for you" category_id="' . Category::query()->skip(1)->value('id') . '" enable_lazy_loading="yes"][/featured-categories-posts]') .
+                    Html::tag('div', '[all-galleries limit="8" title="Galleries" enable_lazy_loading="yes"][/all-galleries]')
                 ,
                 'template' => 'no-sidebar',
             ],
@@ -52,7 +53,7 @@ class PageSeeder extends BaseSeeder
             ],
             [
                 'name' => 'Galleries',
-                'content' => '<div>[gallery title="Galleries"][/gallery]</div>',
+                'content' => '<div>[gallery title="Galleries" enable_lazy_loading="yes"][/gallery]</div>',
             ],
         ];
 

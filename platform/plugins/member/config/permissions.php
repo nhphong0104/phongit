@@ -4,6 +4,7 @@ return [
     [
         'name' => 'Members',
         'flag' => 'member.index',
+        'parent_flag' => 'core.cms',
     ],
     [
         'name' => 'Create',
@@ -21,8 +22,8 @@ return [
         'parent_flag' => 'member.index',
     ],
     [
-        'name' => 'Member Settings',
+        'name' => 'Member',
         'flag' => 'member.settings',
-        'parent_flag' => 'member.index',
+        'parent_flag' => 'settings.others',
     ],
 ];

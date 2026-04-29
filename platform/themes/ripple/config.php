@@ -6,18 +6,6 @@ use Botble\Theme\Theme;
 
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Inherit from another theme
-    |--------------------------------------------------------------------------
-    |
-    | Set up inherit from another if the file is not exists,
-    | this is work with "layouts", "partials" and "views"
-    |
-    | [Notice] assets cannot inherit.
-    |
-     */
-
     'inherit' => null, //default
 
     /*
@@ -47,7 +35,7 @@ return [
 
             $version = get_cms_version();
 
-            $theme->asset()->container('footer')->usePath()->add('jquery', 'plugins/jquery/jquery-3.7.0.min.js');
+            $theme->asset()->container('footer')->usePath()->add('jquery', 'plugins/jquery/jquery-3.7.1.min.js');
 
             $theme->asset()->container('footer')->usePath()
                 ->add('custom', 'js/custom.min.js', ['jquery'], [], $version);

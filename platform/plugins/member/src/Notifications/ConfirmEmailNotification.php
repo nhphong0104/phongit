@@ -14,28 +14,21 @@ class ConfirmEmailNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed $notifiable
-     */
     public function via($notifiable): array
     {
         return ['mail'];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed $notifiable
-     * @return MailMessage
-     */
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
         $emailHandler = EmailHandler::setModule(MEMBER_MODULE_SCREEN_NAME)
             ->setType('plugins')
             ->setTemplate('confirm-email')
-            ->setVariableValue('verify_link', URL::signedRoute('public.member.confirm', ['user' => $notifiable->id]));
+            ->addTemplateSettings(MEMBER_MODULE_SCREEN_NAME, config('plugins.member.email', []))
+            ->setVariableValues([
+                'verify_link' => URL::signedRoute('public.member.confirm', ['user' => $notifiable->id]),
+                'member_name' => $notifiable->name,
+            ]);
 
         return (new MailMessage())
             ->view(['html' => new HtmlString($emailHandler->getContent())])

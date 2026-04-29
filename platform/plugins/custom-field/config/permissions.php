@@ -4,6 +4,7 @@ return [
     [
         'name' => 'Custom Fields',
         'flag' => 'custom-fields.index',
+        'parent_flag' => 'core.cms',
     ],
     [
         'name' => 'Create',

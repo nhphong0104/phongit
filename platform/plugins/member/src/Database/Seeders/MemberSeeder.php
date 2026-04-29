@@ -2,9 +2,11 @@
 
 namespace Botble\Member\Database\Seeders;
 
+use Botble\Base\Models\BaseModel;
 use Botble\Base\Supports\BaseSeeder;
 use Botble\Member\Models\Member;
 use Botble\Member\Models\MemberActivityLog;
+use Illuminate\Support\Facades\Hash;
 
 class MemberSeeder extends BaseSeeder
 {
@@ -13,31 +15,40 @@ class MemberSeeder extends BaseSeeder
         Member::query()->truncate();
         MemberActivityLog::query()->truncate();
 
+        Member::query()->insert($this->getMemberData());
+    }
+
+    protected function getMemberData(): array
+    {
         $faker = $this->fake();
         $now = $this->now();
 
-        Member::query()->create([
-            'first_name' => $faker->firstName(),
-            'last_name' => $faker->lastName(),
-            'email' => 'member@gmail.com',
-            'password' => 12345678,
-            'dob' => $faker->dateTime(),
-            'phone' => $faker->phoneNumber(),
-            'description' => $faker->realText(30),
-            'confirmed_at' => $now,
-        ]);
+        $data = [
+            [
+                'id' => BaseModel::isUsingIntegerId() ? 1 : $faker->uuid(),
+                'first_name' => $faker->firstName(),
+                'last_name' => $faker->lastName(),
+                'email' => 'member@gmail.com',
+                'password' => Hash::make('12345678'),
+                'confirmed_at' => $now,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+        ];
 
-        for ($i = 0; $i < 9; $i++) {
-            Member::query()->create([
+        for ($i = 2; $i < 11; $i++) {
+            $data[] = [
+                'id' => BaseModel::isUsingIntegerId() ? $i : $faker->uuid(),
                 'first_name' => $faker->firstName(),
                 'last_name' => $faker->lastName(),
                 'email' => $faker->email(),
-                'password' => 12345678,
-                'dob' => $faker->dateTime(),
-                'phone' => $faker->phoneNumber(),
-                'description' => $faker->realText(30),
+                'password' => Hash::make('12345678'),
                 'confirmed_at' => $now,
-            ]);
+                'created_at' => $now,
+                'updated_at' => $now,
+            ];
         }
+
+        return $data;
     }
 }

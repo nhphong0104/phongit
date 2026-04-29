@@ -11,7 +11,7 @@ class FieldItemRepository extends RepositoriesAbstract implements FieldItemInter
 {
     public function deleteFieldItem(array|int|string|null $id): int
     {
-        return $this->model->whereIn('id', (array)$id)->delete();
+        return $this->model->whereIn('id', (array) $id)->delete();
     }
 
     public function getGroupItems(int|string|null $groupId, int|string|null $parentId = null): Collection
@@ -35,15 +35,15 @@ class FieldItemRepository extends RepositoriesAbstract implements FieldItemInter
     protected function makeUniqueSlug(
         int|string|null $id,
         int|string|null $parentId,
-        string|null $slug,
+        ?string $slug,
         int $position
-    ): string|null {
+    ): ?string {
         $isExist = $this->getFirstBy([
             'slug' => $slug,
             'parent_id' => $parentId,
         ]);
 
-        if ($isExist && (int)$id != (int)$isExist->id) {
+        if ($isExist && (int) $id != (int) $isExist->id) {
             return $slug . '_' . time() . $position;
         }
 

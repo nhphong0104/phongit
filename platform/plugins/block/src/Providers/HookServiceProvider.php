@@ -33,7 +33,7 @@ class HookServiceProvider extends ServiceProvider
         shortcode()->setAdminConfig('static-block', [$this, 'staticBlockAdminConfig']);
     }
 
-    public function render(Shortcode $shortcode): string|null
+    public function render(Shortcode $shortcode): ?string
     {
         $key = $shortcode->alias;
 

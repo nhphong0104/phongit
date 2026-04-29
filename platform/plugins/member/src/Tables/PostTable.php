@@ -86,7 +86,7 @@ class PostTable extends TableAbstract
                     EloquentBuilder|QueryBuilder|EloquentRelation $query,
                     string $key,
                     string $operator,
-                    string|null $value
+                    ?string $value
                 ) {
                     if (! $value || $key !== 'category') {
                         return false;

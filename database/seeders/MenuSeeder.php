@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Botble\Base\Supports\BaseSeeder;
 use Botble\Blog\Database\Traits\HasBlogSeeder;
-use Botble\Blog\Models\Category;
 use Botble\Menu\Database\Traits\HasMenuSeeder;
 use Botble\Page\Database\Traits\HasPageSeeder;
 use Botble\Page\Models\Page;
@@ -17,16 +16,6 @@ class MenuSeeder extends BaseSeeder
 
     public function run(): void
     {
-        $categories = [];
-
-        foreach (Category::query()->limit(5)->get() as $category) {
-            $categories[] = [
-                'title' => $category->name,
-                'reference_id' => $category->id,
-                'reference_type' => Category::class,
-            ];
-        }
-
         $data = [
             [
                 'name' => 'Main menu',
@@ -58,12 +47,6 @@ class MenuSeeder extends BaseSeeder
                         'reference_type' => Page::class,
                     ],
                 ],
-            ],
-
-            [
-                'name' => 'Featured Categories',
-                'slug' => 'featured-categories',
-                'items' => $categories,
             ],
 
             [

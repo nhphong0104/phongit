@@ -17,6 +17,11 @@ use Botble\Member\Models\Member;
 
 class LoginForm extends AuthForm
 {
+    public static function formTitle(): string
+    {
+        return trans('plugins/member::member.form.login_title');
+    }
+
     public function setup(): void
     {
         parent::setup();

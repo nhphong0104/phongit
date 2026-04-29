@@ -39,11 +39,11 @@ class RequestHandlerListener
             ]);
 
             if ($referrer = $this->request->header('referrer')) {
-                $requestLog->referrer = array_filter(array_unique(array_merge((array)$requestLog->referrer, [$referrer])));
+                $requestLog->referrer = array_filter(array_unique(array_merge((array) $requestLog->referrer, [$referrer])));
             }
 
             if (Auth::guard()->check()) {
-                $requestLog->user_id = array_filter(array_unique(array_merge((array)$requestLog->user_id, [Auth::guard()->id()])));
+                $requestLog->user_id = array_filter(array_unique(array_merge((array) $requestLog->user_id, [Auth::guard()->id()])));
             }
 
             $requestLog->count = $requestLog->exists ? $requestLog->count + 1 : 1;

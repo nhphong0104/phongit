@@ -11,9 +11,9 @@ class CreateFieldGroupRequest extends Request
     public function rules(): array
     {
         return [
-            'order' => 'integer|min:0|required',
-            'rules' => 'json|required',
-            'title' => 'required|string|max:255',
+            'order' => ['required', 'integer', 'min:0', 'max:127'],
+            'rules' => ['json', 'required'],
+            'title' => ['required', 'string', 'max:255'],
             'status' => ['required', 'string', Rule::in(BaseStatusEnum::values())],
         ];
     }

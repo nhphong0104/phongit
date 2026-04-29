@@ -11,6 +11,11 @@ use Botble\Member\Http\Requests\Fronts\Auth\ResetPasswordRequest;
 
 class ResetPasswordForm extends AuthForm
 {
+    public static function formTitle(): string
+    {
+        return trans('plugins/member::member.form.reset_password_title');
+    }
+
     public function setup(): void
     {
         parent::setup();

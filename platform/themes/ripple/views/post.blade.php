@@ -15,7 +15,7 @@
 
             @if ($post->tags->isNotEmpty())
                 @php
-                    if (is_plugin_active('language-advanced')) {
+                    if (is_plugin_active('language') && is_plugin_active('language-advanced')) {
                         $post->tags->loadMissing('translations');
                     }
                 @endphp
@@ -50,7 +50,7 @@
                                 </div>
                                 <header class="post__header">
                                     <p><a href="{{ $relatedItem->url }}" class="post__title"> {{ $relatedItem->name }}</a></p>
-                                    <div class="post__meta"><span class="post__created-at">{{ $post->created_at->translatedFormat('M d, Y') }}</span></div>
+                                    <div class="post__meta"><span class="post__created-at">{{ Theme::formatDate($post->created_at) }}</span></div>
                                 </header>
                             </article>
                         </div>

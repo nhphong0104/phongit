@@ -98,7 +98,15 @@ class RegisterController extends BaseController
     {
         $this->validator($request->input())->validate();
 
-        event(new Registered($member = $this->create($request->input())));
+        $form = RegisterForm::create();
+
+        $member = null;
+
+        $form->saving(function (RegisterForm $form) use ($request, &$member) {
+            $member = $this->create($form->getRequest()->input());
+
+            event(new Registered($member));
+        });
 
         if (setting('verify_account_email', config('plugins.member.general.verify_email'))) {
             $this->sendConfirmationToUser($member);

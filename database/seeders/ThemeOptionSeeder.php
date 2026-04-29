@@ -76,6 +76,8 @@ class ThemeOptionSeeder extends BaseSeeder
                     ],
                 ],
             ],
+            'lazy_load_images' => 1,
+            'lazy_load_placeholder_image' => $this->filePath('general/preloader.gif'),
         ]);
     }
 }

@@ -95,7 +95,7 @@ class CustomFieldSupport
     public function setRules(array|string|null $rules): self
     {
         if (! is_array($rules)) {
-            $this->rules = json_decode((string)$rules, true);
+            $this->rules = json_decode((string) $rules, true);
         } else {
             $this->rules = $rules;
         }
@@ -132,7 +132,7 @@ class CustomFieldSupport
         $fieldGroupRepository = app(FieldGroupInterface::class);
 
         foreach ($fieldGroups as $row) {
-            if (! $this->checkRules(json_decode((string)$row->rules, true))) {
+            if (! $this->checkRules(json_decode((string) $row->rules, true))) {
                 continue;
             }
 
@@ -241,7 +241,7 @@ class CustomFieldSupport
     public function renderAssets(): void
     {
         if (! $this->isRenderedAssets) {
-            add_filter(BASE_FILTER_FOOTER_LAYOUT_TEMPLATE, function (string|null $html): string {
+            add_filter(BASE_FILTER_FOOTER_LAYOUT_TEMPLATE, function (?string $html): string {
                 return $html . view('plugins/custom-field::_script-templates.render-custom-fields')->render();
             }, 16);
             $this->isRenderedAssets = true;
@@ -265,9 +265,9 @@ class CustomFieldSupport
         return true;
     }
 
-    protected function parseRawData(string|null $jsonString): array
+    protected function parseRawData(?string $jsonString): array
     {
-        $fieldGroups = json_decode((string)$jsonString, true) ?: [];
+        $fieldGroups = json_decode((string) $jsonString, true) ?: [];
 
         $result = [];
         foreach ($fieldGroups as $fieldGroup) {
@@ -355,7 +355,7 @@ class CustomFieldSupport
 
                 break;
             case 'checkbox':
-                $value = isset($field['value']) ? (array)$field['value'] : [];
+                $value = isset($field['value']) ? (array) $field['value'] : [];
 
                 break;
             default:
@@ -367,7 +367,7 @@ class CustomFieldSupport
         return $value;
     }
 
-    public function deleteCustomFields(Model|null $data): bool
+    public function deleteCustomFields(?Model $data): bool
     {
         if ($data) {
             CustomField::query()
@@ -403,7 +403,7 @@ class CustomFieldSupport
 
     public function supportedModules(): array
     {
-        return (array)config('plugins.custom-field.general.supported', []);
+        return (array) config('plugins.custom-field.general.supported', []);
     }
 
     public function getField(BaseModel $data, $key = null, $default = null): string|null|array

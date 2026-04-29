@@ -2,8 +2,9 @@
 
 return [
     [
-        'name' => 'Block',
+        'name' => 'Static Blocks',
         'flag' => 'block.index',
+        'parent_flag' => 'core.cms',
     ],
     [
         'name' => 'Create',

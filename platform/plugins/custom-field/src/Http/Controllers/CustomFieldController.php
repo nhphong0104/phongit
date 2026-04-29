@@ -118,7 +118,7 @@ class CustomFieldController extends BaseController
 
     public function postImport(ImportCustomFieldsAction $action, Request $request)
     {
-        $json = (array)$request->input('json_data', []);
+        $json = (array) $request->input('json_data', []);
 
         return $action->run($json);
     }

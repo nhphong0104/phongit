@@ -16,10 +16,10 @@ export class Helpers {
 ;(($) => {
     let $body = $('body')
 
-    $body.on('click', 'form.import-field-group button.custom-import-button', (event) => {
+    $body.on('click', 'button.custom-import-button', (event) => {
         event.preventDefault()
         event.stopPropagation()
-        let $form = $(event.currentTarget).closest('form')
+        let $form = $(document).find('form.import-field-group')
         $form.find('input[type=file]').val('').trigger('click')
     })
 

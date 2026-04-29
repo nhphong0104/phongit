@@ -2,6 +2,7 @@
 
 use Botble\Base\Forms\FieldOptions\SelectFieldOption;
 use Botble\Base\Forms\FieldOptions\TextFieldOption;
+use Botble\Base\Forms\Fields\ColorField;
 use Botble\Base\Forms\Fields\NumberField;
 use Botble\Base\Forms\Fields\SelectField;
 use Botble\Base\Forms\Fields\TextField;
@@ -28,17 +29,30 @@ app('events')->listen(RouteMatched::class, function () {
             __('Featured posts'),
             __('Featured posts'),
             function (ShortcodeCompiler $shortcode) {
-                $posts = get_featured_posts((int)$shortcode->limit ?: 5, [
+                $posts = get_featured_posts((int) $shortcode->limit ?: 5, [
                     'author',
                 ]);
 
-                return Theme::partial('shortcodes.featured-posts', compact('posts'));
+                if ($posts->isEmpty()) {
+                    return null;
+                }
+
+                return Theme::partial('shortcodes.featured-posts', compact('posts', 'shortcode'));
             }
         );
 
         Shortcode::setAdminConfig('featured-posts', function (array $attributes) {
             return ShortcodeForm::createFromArray($attributes)
-                ->add('limit', NumberField::class, TextFieldOption::make()->label(__('Limit'))->toArray());
+                ->withLazyLoading()
+                ->add(
+                    'limit',
+                    NumberField::class,
+                    TextFieldOption::make()->label(__('Limit'))->defaultValue(5)->toArray()
+                )
+                ->add('background_color', ColorField::class, [
+                    'label' => __('Background color'),
+                    'default_value' => '#ecf0f1',
+                ]);
         });
 
         Shortcode::setPreviewImage('featured-posts', Theme::asset()->url('images/ui-blocks/featured-posts.png'));
@@ -50,12 +64,17 @@ app('events')->listen(RouteMatched::class, function () {
             function (ShortcodeCompiler $shortcode) {
                 $posts = get_latest_posts(7, [], ['slugable']);
 
+                if ($posts->isEmpty()) {
+                    return null;
+                }
+
                 $withSidebar = ($shortcode->with_sidebar ?: 'yes') === 'yes';
 
                 return Theme::partial('shortcodes.recent-posts', [
                     'title' => $shortcode->title,
                     'withSidebar' => $withSidebar,
                     'posts' => $posts,
+                    'shortcode' => $shortcode,
                 ]);
             }
         );
@@ -64,14 +83,18 @@ app('events')->listen(RouteMatched::class, function () {
 
         Shortcode::setAdminConfig('recent-posts', function (array $attributes) {
             return ShortcodeForm::createFromArray($attributes)
+                ->withLazyLoading()
                 ->add('title', TextField::class, TextFieldOption::make()->label(__('Title'))->toArray())
+                ->add('background_color', ColorField::class, [
+                    'label' => __('Background color'),
+                    'default_value' => '#fff',
+                ])
                 ->add(
                     'with_sidebar',
                     SelectField::class,
                     SelectFieldOption::make()
                         ->label(__('With top sidebar?'))
                         ->choices(['yes' => __('Yes'), 'no' => __('No')])
-                        ->defaultValue('yes')
                         ->toArray()
                 );
         });
@@ -97,39 +120,32 @@ app('events')->listen(RouteMatched::class, function () {
 
                 $posts = collect();
 
-                if ($categoryId = $shortcode->category_id) {
-                    $with['posts'] = function (BelongsToMany|BaseQueryBuilder $query) {
-                        $query
-                            ->wherePublished()
-                            ->orderByDesc('created_at')
-                            ->take(6);
-                    };
+                $categoryIds = Shortcode::fields()->getIds('category_id', $shortcode);
 
-                    $category = Category::query()
+                if ($categoryIds) {
+                    $categories = Category::query()
                         ->with($with)
                         ->wherePublished()
-                        ->where('id', $categoryId)
+                        ->whereIn('id', $categoryIds)
                         ->select([
                             'id',
                             'name',
                             'description',
                             'icon',
                         ])
-                        ->first();
-
-                    if ($category) {
-                        $posts = $category->posts;
-                    } else {
-                        $posts = collect();
-                    }
+                        ->get();
                 } else {
                     $categories = get_featured_categories(2, $with);
+                }
 
-                    foreach ($categories as $category) {
-                        $posts = $posts->merge($category->posts->take(3));
-                    }
+                foreach ($categories as $category) {
+                    $posts = $posts->merge($category->posts->take(3));
+                }
 
-                    $posts = $posts->sortByDesc('created_at');
+                $posts = $posts->sortByDesc('created_at');
+
+                if ($posts->isEmpty()) {
+                    return null;
                 }
 
                 $withSidebar = ($shortcode->with_sidebar ?: 'yes') === 'yes';
@@ -140,6 +156,7 @@ app('events')->listen(RouteMatched::class, function () {
                         'title' => $shortcode->title,
                         'withSidebar' => $withSidebar,
                         'posts' => $posts,
+                        'shortcode' => $shortcode,
                     ]
                 );
             }
@@ -151,24 +168,26 @@ app('events')->listen(RouteMatched::class, function () {
         );
 
         Shortcode::setAdminConfig('featured-categories-posts', function (array $attributes) {
-            $categories = Category::query()
-                ->wherePublished()
-                ->select('name', 'id')
-                ->get()
-                ->mapWithKeys(fn ($item) => [$item->id => $item->name])
-                ->all();
+            $categories = Category::query()->wherePublished()->pluck('name', 'id')->all();
+            $categoryIds = Arr::get($attributes, 'category_id');
+
+            if (! is_array($categoryIds)) {
+                $categoryIds = $categoryIds ? explode(',', $categoryIds) : null;
+            }
 
             return ShortcodeForm::createFromArray($attributes)
+                ->withLazyLoading()
                 ->add('title', TextField::class, TextFieldOption::make()->label(__('Title'))->toArray())
                 ->add(
                     'category_id',
                     SelectField::class,
                     SelectFieldOption::make()
-                        ->label(__('Category'))
-                        ->choices(['' => __('All')] + $categories)
-                        ->selected(Arr::get($attributes, 'category_id'))
+                        ->label(__('Choose categories'))
+                        ->choices($categories)
+                        ->selected($categoryIds)
                         ->searchable()
-                        ->toArray()
+                        ->multiple()
+                        ->toArray(),
                 )
                 ->add(
                     'with_sidebar',
@@ -176,9 +195,12 @@ app('events')->listen(RouteMatched::class, function () {
                     SelectFieldOption::make()
                         ->label(__('With primary sidebar?'))
                         ->choices(['yes' => __('Yes'), 'no' => __('No')])
-                        ->defaultValue('yes')
                         ->toArray()
-                );
+                )
+                ->add('background_color', ColorField::class, [
+                    'label' => __('Background color'),
+                    'default_value' => '#ecf0f1',
+                ]);
         });
     }
 
@@ -194,7 +216,17 @@ app('events')->listen(RouteMatched::class, function () {
             __('All galleries'),
             __('All galleries'),
             function (ShortcodeCompiler $shortcode) {
-                return Theme::partial('shortcodes.all-galleries', ['limit' => (int)$shortcode->limit]);
+                if (! function_exists('render_galleries')) {
+                    return null;
+                }
+
+                $galleries = render_galleries((int) $shortcode->limit ?: 8);
+
+                if (! $galleries) {
+                    return null;
+                }
+
+                return Theme::partial('shortcodes.all-galleries', compact('galleries', 'shortcode'));
             }
         );
 
@@ -202,7 +234,16 @@ app('events')->listen(RouteMatched::class, function () {
 
         Shortcode::setAdminConfig('all-galleries', function (array $attributes) {
             return ShortcodeForm::createFromArray($attributes)
-                ->add('limit', NumberField::class, TextFieldOption::make()->label(__('Limit'))->toArray());
+                ->withLazyLoading()
+                ->add(
+                    'limit',
+                    NumberField::class,
+                    TextFieldOption::make()->label(__('Limit'))->defaultValue(8)->toArray()
+                )
+                ->add('background_color', ColorField::class, [
+                    'label' => __('Background color'),
+                    'default_value' => '#fff',
+                ]);
         });
     }
 });
