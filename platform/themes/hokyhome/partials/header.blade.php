@@ -83,197 +83,26 @@
         <div class="mega-menu-wrapper">
             <div class="header-main">
                 <div class="logo">
-                    <a href="{{ route('home') }}" class="header-logo">
-                        <img src="{{ theme_option('logo') }}" alt="logo-img">
+                    <a href="{{ BaseHelper::getHomepageUrl() }}" class="header-logo">
+                    @if ($logo = theme_option('logo'))
+                        {{ RvMedia::image($logo, theme_option('site_title')) }}
+                    @endif
                     </a>
-                    <a href="{{ route('home') }}" class="header-logo-2">
-                        <img src="{{ theme_option('logo') }}" alt="logo-img">
+                     <a href="{{ BaseHelper::getHomepageUrl() }}" class="header-logo-2">
+                    @if ($logo = theme_option('logo'))
+                        {{ RvMedia::image($logo, theme_option('site_title')) }}
+                    @endif
                     </a>
                 </div>
                 <div class="mean__menu-wrapper">
                     <div class="main-menu">
                         <nav id="mobile-menu">
-                            <ul>
-                                <li class="has-dropdown active menu-thumb">
-                                    <a href="index.html">
-                                        Home
-                                    </a>
-                                    <ul class="submenu has-homemenu">
-                                        <li>
-                                            <div class="homemenu-items">
-                                                <div class="homemenu">
-                                                    <div class="homemenu-thumb">
-                                                        <img src="assets/img/header/home-1.jpg" alt="img">
-                                                        <div class="demo-button">
-                                                            <a href="index.html" class="gt-theme-btn">
-                                                                <span class="gt-text-btn">
-                                                                    <span class="gt-text-2"> Multi Page <i
-                                                                            class="fa-solid fa-arrow-right"></i></span>
-                                                                </span>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="homemenu-content text-center">
-                                                        <h4 class="homemenu-title">
-                                                            Constraction
-                                                        </h4>
-                                                    </div>
-                                                </div>
-                                                <div class="homemenu">
-                                                    <div class="homemenu-thumb mb-15">
-                                                        <img src="assets/img/header/home-2.jpg" alt="img">
-                                                        <div class="demo-button">
-                                                            <a href="index-2.html" class="gt-theme-btn">
-                                                                <span class="gt-text-btn">
-                                                                    <span class="gt-text-2"> Multi Page <i
-                                                                            class="fa-solid fa-arrow-right"></i></span>
-                                                                </span>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="homemenu-content text-center">
-                                                        <h4 class="homemenu-title">
-                                                            Architecture
-                                                        </h4>
-                                                    </div>
-                                                </div>
-                                                <div class="homemenu">
-                                                    <div class="homemenu-thumb mb-15">
-                                                        <img src="assets/img/header/home-3.jpg" alt="img">
-                                                        <div class="demo-button">
-                                                            <a href="index-3.html" class="gt-theme-btn">
-                                                                <span class="gt-text-btn">
-                                                                    <span class="gt-text-2"> Multi Page <i
-                                                                            class="fa-solid fa-arrow-right"></i></span>
-                                                                </span>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="homemenu-content text-center">
-                                                        <h4 class="homemenu-title">
-                                                            Roofing Home
-                                                        </h4>
-                                                    </div>
-                                                </div>
-                                                <div class="homemenu">
-                                                    <div class="homemenu-thumb mb-15">
-                                                        <img src="assets/img/header/home-4.jpg" alt="img">
-                                                        <div class="demo-button">
-                                                            <a href="index-4.html" class="gt-theme-btn">
-                                                                <span class="gt-text-btn">
-                                                                    <span class="gt-text-2"> Multi Page <i
-                                                                            class="fa-solid fa-arrow-right"></i></span>
-                                                                </span>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="homemenu-content text-center">
-                                                        <h4 class="homemenu-title">
-                                                            Solar
-                                                        </h4>
-                                                    </div>
-                                                </div>
-                                                <div class="homemenu">
-                                                    <div class="homemenu-thumb mb-15">
-                                                        <img src="assets/img/header/home-5.jpg" alt="img">
-                                                        <div class="demo-button">
-                                                            <a href="index-5.html" class="gt-theme-btn">
-                                                                <span class="gt-text-btn">
-                                                                    <span class="gt-text-2"> Multi Page <i
-                                                                            class="fa-solid fa-arrow-right"></i></span>
-                                                                </span>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="homemenu-content text-center">
-                                                        <h4 class="homemenu-title">
-                                                            Industry
-                                                        </h4>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="has-dropdown active d-xl-none">
-                                    <a href="index.html" class="border-none">
-                                        Home
-                                    </a>
-                                    <ul class="submenu">
-                                        <li><a href="index.html">Constraction</a></li>
-                                        <li><a href="index-2.html">Architecture</a></li>
-                                        <li><a href="index-3.html">Roofing Home</a></li>
-                                        <li><a href="index-4.html">Solar</a></li>
-                                        <li><a href="index-5.html">Industry</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="about.html">About Us</a></li>
-                                <li class="has-dropdown">
-                                    <a href="news.html">
-                                        Pages
-                                    </a>
-                                    <ul class="submenu">
-                                        <li class="has-dropdown">
-                                            <a href="team-details.html">
-                                                Our Team
-                                                <i class="fas fa-angle-right"></i>
-                                            </a>
-                                            <ul class="submenu">
-                                                <li><a href="team.html">Our Team</a></li>
-                                                <li><a href="team-details.html">Team Details</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="has-dropdown">
-                                            <a href="project-details.html">
-                                                Our Project
-                                                <i class="fas fa-angle-right"></i>
-                                            </a>
-                                            <ul class="submenu">
-                                                <li><a href="project.html">Our Project</a></li>
-                                                <li><a href="project-details.html">Project Details</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="has-dropdown">
-                                            <a href="shop-details.html">
-                                                Shop Page
-                                                <i class="fas fa-angle-right"></i>
-                                            </a>
-                                            <ul class="submenu">
-                                                <li><a href="shop.html">Shop Grid</a></li>
-                                                <li><a href="shop-list.html">Shop List</a></li>
-                                                <li><a href="shop-cart.html">Shop Cart</a></li>
-                                                <li><a href="shop-details.html">Shop Details</a></li>
-                                                <li><a href="checkout.html">Checkout</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="pricing.html">Our Pricing</a></li>
-                                        <li><a href="coming-soon.html">Coming Soon</a></li>
-                                        <li><a href="404.html">404 Page</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="service-details.html">
-                                        Services
-                                    </a>
-                                    <ul class="submenu">
-                                        <li><a href="service.html">Service Page</a></li>
-                                        <li><a href="service-details.html">Service Details</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="news-details.html">
-                                        Blog
-                                    </a>
-                                    <ul class="submenu">
-                                        <li><a href="news-grid.html">Blog Grid</a></li>
-                                        <li><a href="news.html">Blog Standard</a></li>
-                                        <li><a href="news-details.html">Blog Details</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="contact.html">Contact Us</a>
-                                </li>
-                            </ul>
+                            {!!
+                            Menu::renderMenuLocation('main-menu', [
+                                'options' => ['id' => 'mobile-menu'],
+                                'view'    => 'main-menu-mobile',
+                            ])
+                        !!}
                         </nav>
                     </div>
                 </div>
@@ -286,7 +115,7 @@
                     <div class="header__hamburger my-auto">
                         <div class="sidebar__toggle">
                             <div class="header-bar">
-                                <img src="assets/img/home-1/dot.svg" alt="img">
+                                <img src="/img/dot.svg" alt="img">
                             </div>
                         </div>
                     </div>
@@ -305,110 +134,11 @@
 <div class="search-popup">
     <div class="search-popup__overlay search-toggler"></div>
     <div class="search-popup__content">
-        <form role="search" method="get" class="search-popup__form" action="#">
-            <input type="text" id="search" name="search" placeholder="Search Here...">
+        <form role="search" method="get" class="search-popup__form" action="{{ route('public.search') }}">
+            <input type="text" id="search" name="q" placeholder="Tìm kiếm ...">
             <button type="submit" aria-label="search submit" class="search-btn">
                 <span><i class="fa-regular fa-magnifying-glass"></i></span>
             </button>
         </form>
-    </div>
-</div>
-
-<!-- GT Shop Details Popup Start -->
-<div class="modal modal-common-wrap fade" id="exampleModal2" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog style-shop-details modal-dialog-centered modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="gt-shop-details-wrapper">
-                    <div class="row g-4">
-                        <div class="col-lg-6">
-                            <div class="gt-shop-details-image">
-                                <img src="assets/img/inner/shop-details/details-01.jpg" alt="img">
-                                <span class="gt-box-text">(09% Of)</span>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="gt-shop-details-content">
-                                <h6><span>Brand:</span> Conztra</h6>
-                                <h2>Cordless Screwdriver Drill</h2>
-                                <ul class="price-list">
-                                    <li>
-                                        Price: <span>$250.00</span>
-                                    </li>
-                                    <li>
-                                        <del>$279.00</del>
-                                    </li>
-                                </ul>
-                                <span class="eye-icon">
-                                    <i class="fa-regular fa-eye"></i>
-                                    16 people are viewing this right now
-                                </span>
-                                <ul class="color-list">
-                                    <li>
-                                        <span>Color:</span>
-                                    </li>
-                                    <li></li>
-                                    <li></li>
-                                    <li></li>
-                                    <li></li>
-                                </ul>
-                                <div class="star">
-                                    <i class="fa-solid fa-star"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                    <span>(79+ Review)</span>
-                                </div>
-                                <p>
-                                    Hurry! Only 12 units left in stock!
-                                </p>
-                                <div class="cart-quantity">
-                                    <p class="qty">
-                                        <button class="qtyminus" aria-hidden="true">−</button>
-                                        <input type="number" name="qty" id="qty2" min="1" max="10" step="1" value="1">
-                                        <button class="qtyplus" aria-hidden="true">+</button>
-                                    </p>
-                                    <a href="shop-details.html" class="shop-btn theme-btn">Add to cart</a>
-                                    <div class="icon-item">
-                                        <a href="shop-details.html" class="icon">
-                                            <i class="far fa-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <button type="submit" class="buy-btn">
-                                    Buy It Now
-                                </button>
-                                <ul class="gt-list-items">
-                                    <li>
-                                        <span>Certification:</span> Meets DOT, ECE, or Snell safety standards
-                                    </li>
-                                    <li>
-                                        <span>Maximum Protection:</span> Full coverage for your head, face, and chin
-                                    </li>
-                                </ul>
-                                <div class="share-list">
-                                    <span>Share With:</span>
-                                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                    <a href="#"><i class="fab fa-twitter"></i></a>
-                                    <a href="#"><i class="fab fa-vimeo-v"></i></a>
-                                    <a href="#"><i class="fab fa-pinterest-p"></i></a>
-                                </div>
-                                <div class="gt-bank-list">
-                                    <div class="">
-                                        Guaranteed
-                                        <span>Safe & Secure Checkout</span>
-                                    </div>
-                                    <img src="assets/img/inner/shop-details/pay_brand.png" alt="img">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
