@@ -46,14 +46,13 @@ class SimpleSliderServiceProvider extends ServiceProvider
 
         DashboardMenu::default()->beforeRetrieving(function (): void {
             DashboardMenu::make()
-                ->registerItem(
-                    DashboardMenuItem::make()
-                        ->id('cms-plugins-simple-slider')
-                        ->priority(390)
-                        ->name('plugins/simple-slider::simple-slider.menu')
-                        ->icon('ti ti-slideshow')
-                        ->route('simple-slider.index')
-                );
+                ->registerItem([
+                        'id' => 'cms-plugins-simple-slider',
+                        'priority' => 390,
+                        'name' => 'plugins/simple-slider::simple-slider.menu',
+                        'icon' => 'ti ti-slideshow',
+                        'route' => 'simple-slider.index'
+                ]);
         });
 
         PanelSectionManager::default()->beforeRendering(function (): void {

@@ -1,57 +1,72 @@
-<div class="banner_section slide_wrap shop_banner_slider staggered-animation-wrap">
-    @if ($collapsingProductCategories)
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-9 offset-lg-3">
-    @endif
-        <div id="carouselExampleControls" class="carousel slide carousel-fade light_arrow" data-ride="carousel">
-            <div class="carousel-inner">
-                @foreach($sliders->loadMissing('metadata') as $slider)
-                    @php
-                        $tabletImage = $slider->getMetaData('tablet_image', true) ?: $slider->image;
-                        $mobileImage = $slider->getMetaData('mobile_image', true) ?: $tabletImage;
-                    @endphp
-                    <div @class([
-                        'carousel-item background_bg',
-                        'active' => $loop->first,
-                    ]) data-img-src="{{ RvMedia::getImageUrl($slider->image, null, false, RvMedia::getDefaultImage()) }}"
-                        @if ($tabletImage) data-tablet-img-src="{{ RvMedia::getImageUrl($tabletImage, null, false, RvMedia::getDefaultImage()) }}" @endif
-                        @if ($mobileImage) data-mobile-img-src="{{ RvMedia::getImageUrl($mobileImage, null, false, RvMedia::getDefaultImage()) }}" @endif>
-                        <div class="banner_slide_content banner_content_inner">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-lg-6 col-md-8 col-sm-9 col-10">
-                                        <div class="banner_content2">
-                                            @if ($slider->getMetaData('sub_title', true))
-                                                <h6 class="mb-2 mb-sm-3 staggered-animation text-uppercase" data-animation="fadeInDown" data-animation-delay="0.2s">{{ $slider->getMetaData('sub_title', true) }}</h6>
-                                            @endif
-                                            @if ($slider->title)
-                                                <h2 class="staggered-animation" data-animation="fadeInDown" data-animation-delay="0.3s">{{ $slider->title }}</h2>
-                                            @endif
-                                            @if ($slider->description)
-                                                <p class="staggered-animation" data-animation="fadeInUp" data-animation-delay="0.4s">{{ $slider->description }}</p>
-                                            @endif
-                                            @if ($slider->link)
-                                                <a class="btn btn-line-fill btn-radius staggered-animation text-uppercase" href="{{ $slider->link }}" data-animation="slideInLeft"
-                                                    data-animation-delay="1.5s">{!! BaseHelper::clean($slider->getMetaData('button_text', true) ?: __('Shop Now')) !!}</a>
-                                            @endif
-                                        </div>
+@php
+    Theme::set('hasSlider', true);
+@endphp
+
+<section class="tp-slider-area p-relative z-index-1">
+    <div class="tp-slider-active-3 swiper-container"
+         data-loop="{{ $shortcode->is_loop == 'yes' }}"
+         data-autoplay="{{ $shortcode->is_autoplay == 'yes' }}"
+         data-autoplay-speed="{{ in_array($shortcode->autoplay_speed, [2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000]) ? $shortcode->autoplay_speed : 5000 }}"
+    >
+        <div class="swiper-wrapper">
+            @foreach ($sliders as $slider)
+                @php
+                    $title = $slider->title;
+                    $description = $slider->description;
+
+                    $tabletImage = $slider->getMetaData('tablet_image', true) ?: $slider->image;
+                    $mobileImage = $slider->getMetaData('mobile_image', true) ?: $tabletImage;
+                @endphp
+
+                <div class="tp-slider-item-3 tp-slider-height-3 p-relative swiper-slide grey-bg d-flex align-items-center">
+                    <div
+                        class="tp-slider-thumb-3 include-bg"
+                        @if($slider->image)
+                            data-background="{{ RvMedia::getImageUrl($slider->image, $title) }}"
+                        @endif
+                        @if ($tabletImage) data-tablet-background="{{ RvMedia::getImageUrl($tabletImage) }}" @endif
+                        @if ($mobileImage) data-mobile-background="{{ RvMedia::getImageUrl($mobileImage) }}" @endif
+                    ></div>
+                    @if($title || $description)
+                        <div class="container">
+                            <div class="row align-items-center">
+                                <div class="col-xl-6 col-lg-6 col-md-8">
+                                    <div class="tp-slider-content-3">
+                                        @if($description)
+                                            <span @if($fontFamily = $shortcode->font_family_of_description) style="--tp-ff-charm: '{{ $fontFamily }}'" @endif>
+                                                {!! BaseHelper::clean($description) !!}
+                                            </span>
+                                        @endif
+                                        @if ($title)
+                                            <h3 class="tp-slider-title-3" @style(["font-size: {$shortcode->title_font_size}px" => $shortcode->title_font_size])>{!! BaseHelper::clean($title) !!}</h3>
+                                        @endif
+                                        @if($buttonLabel = $slider->getMetaData('button_label', true))
+                                            <div class="tp-slider-btn-3">
+                                                <a href="{{ $slider->link }}" class="tp-btn tp-btn-border tp-btn-border-white">
+                                                    {!! BaseHelper::clean($buttonLabel) !!}
+                                                </a>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                @endforeach
-            </div>
-            <ol class="carousel-indicators indicators_style2">
-                @foreach($sliders as $slider)
-                    <li data-target="#carouselExampleControls" data-slide-to="{{ $loop->index }}" @if ($loop->first) class="active" @endif></li>
-                @endforeach
-            </ol>
-        </div>
-    @if ($collapsingProductCategories)
+                    @endif
                 </div>
-            </div>
+            @endforeach
         </div>
-    @endif
-</div>
+        <div class="tp-swiper-dot tp-slider-3-dot d-sm-none"></div>
+        <div class="tp-slider-arrow-3 d-none d-sm-block">
+            <button type="button" class="tp-slider-3-button-prev">
+                <svg width="22" height="42" viewBox="0 0 22 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 0.999999L1 21L21 41" stroke="currentColor" stroke-opacity="0.3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </button>
+            <button type="button" class="tp-slider-3-button-next">
+                <svg width="22" height="42" viewBox="0 0 22 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 0.999999L21 21L1 41" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </button>
+        </div>
+    </div>
+</section>

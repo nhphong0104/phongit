@@ -1,50 +1,83 @@
-<div class="banner_section slide_medium shop_banner_slider staggered-animation-wrap">
-    @if ($collapsingProductCategories)
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-9 offset-lg-3">
-    @endif
-        <div id="carouselExampleControls" class="carousel slide light_arrow" data-ride="carousel">
-            <div class="carousel-inner">
-                @foreach($sliders->loadMissing('metadata') as $slider)
-                    @php
-                        $tabletImage = $slider->getMetaData('tablet_image', true) ?: $slider->image;
-                        $mobileImage = $slider->getMetaData('mobile_image', true) ?: $tabletImage;
-                    @endphp
+<section class="tp-slider-area p-relative z-index-1">
+    <div
+        class="tp-slider-active tp-slider-variation swiper-container"
+        data-loop="{{ $shortcode->is_loop == 'yes' }}"
+        data-autoplay="{{ $shortcode->is_autoplay == 'yes' }}"
+        data-autoplay-speed="{{ in_array($shortcode->autoplay_speed, [2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000]) ? $shortcode->autoplay_speed : 5000 }}"
+    >
+        <div class="swiper-wrapper">
+            @foreach ($sliders as $slider)
+                @php
+                    $title = $slider->title;
+                    $subtitle = $slider->getMetaData('subtitle', true);
+                    $description = $slider->description;
+                @endphp
 
-                    <div class="carousel-item @if ($loop->first) active @endif"
-                        data-img-src="{{ RvMedia::getImageUrl($slider->image, null, false, RvMedia::getDefaultImage()) }}"
-                        @if ($tabletImage) data-tablet-img-src="{{ RvMedia::getImageUrl($tabletImage, null, false, RvMedia::getDefaultImage()) }}" @endif
-                        @if ($mobileImage) data-mobile-img-src="{{ RvMedia::getImageUrl($mobileImage, null, false, RvMedia::getDefaultImage()) }}" @endif
-                    >
-                        <div class="banner_slide_content banner_content_inner">
-                            <div class="col-lg-8 col-10">
-                                <div class="banner_content overflow-hidden">
-                                    @if ($slider->description)
-                                        <p class="banner_content_subtitle mb-3 staggered-animation font-weight-light" data-animation="slideInLeft" data-animation-delay="0.5s">{{ $slider->description }}</p>
-                                    @endif
-                                    @if ($slider->title)
-                                        <h2 class="staggered-animation" data-animation="slideInLeft" data-animation-delay="1s">{{ $slider->title }}</h2>
-                                    @endif
-                                    @if ($slider->link)
-                                        <a class="btn btn-fill-out rounded-0 staggered-animation text-uppercase" href="{{ $slider->link }}"
-                                            data-animation="slideInLeft" data-animation-delay="1.5s">{!! BaseHelper::clean($slider->getMetaData('button_text', true) ?: __('Shop Now')) !!}</a>
-                                    @endif
+                <div
+                    @class(['tp-slider-item tp-slider-height d-flex align-items-center swiper-slide', 'is-light' => $slider->getMetaData('is_light', true)])
+                    style="background-color: {{ $slider->getMetaData('background_color', true) }}"
+                >
+                    <div class="tp-slider-shape d-none d-sm-block">
+                        @foreach(range(1, 4) as $i)
+                            @if($shape = $shortcode->{"shape_$i"})
+                                {{ RvMedia::image($shape, $slider->title, attributes: ['class' => "tp-slider-shape-$i", 'loading' => 'lazy']) }}
+                            @endif
+                        @endforeach
+                    </div>
+                    <div class="container">
+                        @if ($title || $description)
+                            <div class="row align-items-center">
+                                <div class="col-xl-5 col-lg-6 col-md-6">
+                                    <div class="tp-slider-content p-relative z-index-1">
+                                        @if($subtitle)
+                                            <span>{!! BaseHelper::clean($subtitle) !!}</span>
+                                        @endif
+                                        @if ($title)
+                                            <h3 class="tp-slider-title" @style(["font-size: {$shortcode->title_font_size}px" => $shortcode->title_font_size])>{!! BaseHelper::clean($title) !!}</h3>
+                                        @endif
+                                        @if($description)
+                                            <p @if($fontFamily = $shortcode->font_family_of_description) style="--tp-ff-oregano: '{{ $fontFamily }}'" @endif>
+                                                {!! BaseHelper::clean($description) !!}
+                                            </p>
+                                        @endif
+                                        @if($buttonLabel = $slider->getMetaData('button_label', true))
+                                            <div class="tp-slider-btn">
+                                                <a href="{{ $slider->link }}" class="tp-btn tp-btn-2 tp-btn-white">
+                                                    {!! BaseHelper::clean($buttonLabel) !!}
+                                                </a>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-xl-7 col-lg-6 col-md-6">
+                                    <div class="tp-slider-thumb text-end">
+                                        @include(Theme::getThemeNamespace('partials.shortcodes.simple-slider.includes.image', ['slider' => $slider, $loop->index ? ['loading' => 'lazy'] : ['loading' => 'eager']]))
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        @else
+                            <div class="tp-slider-thumb text-end">
+                                @include(Theme::getThemeNamespace('partials.shortcodes.simple-slider.includes.image', ['slider' => $slider, $loop->index ? ['loading' => 'lazy'] : ['loading' => 'eager']]))
+                            </div>
+                        @endif
                     </div>
-                @endforeach
-            </div>
-            <ol class="carousel-indicators indicators_style1">
-                @foreach($sliders as $slider)
-                    <li data-target="#carouselExampleControls" data-slide-to="{{ $loop->index }}" @if ($loop->first) class="active" @endif></li>
-                @endforeach
-            </ol>
-        </div>
-    @if ($collapsingProductCategories)
                 </div>
-            </div>
+            @endforeach
         </div>
-    @endif
-</div>
+        @if(count($sliders) > 1)
+            <div class="tp-slider-arrow tp-swiper-arrow d-none d-lg-block">
+                <button type="button" class="tp-slider-button-prev">
+                    <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 13L1 7L7 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <button type="button" class="tp-slider-button-next">
+                    <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 13L7 7L1 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="tp-slider-dot tp-swiper-dot"></div>
+        @endif
+    </div>
+</section>

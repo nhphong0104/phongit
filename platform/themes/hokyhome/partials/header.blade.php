@@ -1,8 +1,51 @@
+<!-- Preloader Start -->
+<div id="preloader" class="preloader">
+    <div class="animation-preloader">
+        <div class="spinner">
+        </div>
+        <div class="txt-loading">
+            <span data-text-preloader="H" class="letters-loading">
+                H
+            </span>
+            <span data-text-preloader="O" class="letters-loading">
+                O
+            </span>
+            <span data-text-preloader="K" class="letters-loading">
+                K
+            </span>
+            <span data-text-preloader="Y" class="letters-loading">
+                Y
+            </span>
+            
+        </div>
+        <p class="text-center">Loading</p>
+    </div>
+    <div class="loader">
+        <div class="row">
+            <div class="col-3 loader-section section-left">
+                <div class="bg"></div>
+            </div>
+            <div class="col-3 loader-section section-left">
+                <div class="bg"></div>
+            </div>
+            <div class="col-3 loader-section section-right">
+                <div class="bg"></div>
+            </div>
+            <div class="col-3 loader-section section-right">
+                <div class="bg"></div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- GT Back To Top Start -->
 <button id="gt-back-top" class="gt-back-to-top show">
     <i class="fa-solid fa-arrow-up"></i>
 </button>
+
+<!-- GT MouseCursor Start -->
+<div class="mouseCursor cursor-outer"></div>
+<div class="mouseCursor cursor-inner"></div>
 
 <!-- Offcanvas Area Start -->
 <div class="fix-area">
@@ -25,7 +68,8 @@
                     </div>
                 </div>
                 <p class="text d-none d-xl-block">
-                    Nullam dignissim, ante scelerisque the is euismod fermentum odio sem semper the is erat, a feugiat
+                    Nullam dignissim, ante scelerisque the is euismod fermentum odio sem semper the is erat, a
+                    feugiat
                     leo urna eget eros. Duis Aenean a imperdiet risus.
                 </p>
                 <div class="mobile-menu fix mb-3"></div>
@@ -46,7 +90,8 @@
                             </div>
                             <div class="offcanvas__contact-text">
                                 <a href="mailto:{{ theme_option('company_email') }}">
-                                    <span class="mailto:{{ theme_option('company_email') }}">{{ theme_option('company_email') }}</span></a>
+                                    <span
+                                        class="mailto:{{ theme_option('company_email') }}">{{ theme_option('company_email') }}</span></a>
                             </div>
                         </li>
                         <li class="d-flex align-items-center">
@@ -54,7 +99,8 @@
                                 <i class="far fa-phone"></i>
                             </div>
                             <div class="offcanvas__contact-text">
-                                <a href="tel:{{ theme_option('company_phone') }}">{{ theme_option('company_phone') }}</a>
+                                <a
+                                    href="tel:{{ theme_option('company_phone') }}">{{ theme_option('company_phone') }}</a>
                             </div>
                         </li>
                     </ul>
@@ -68,7 +114,8 @@
                         </span>
                     </a>
                     <div class="social-icon d-flex align-items-center">
-                        <a href="{{ theme_option('company_facebook') }}" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        <a href="{{ theme_option('company_facebook') }}" target="_blank"><i
+                                class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
                         <a href="#"><i class="fab fa-youtube"></i></a>
                         <a href="#"><i class="fab fa-linkedin-in"></i></a>
@@ -80,32 +127,47 @@
 </div>
 <div class="offcanvas__overlay"></div>
 
-<!-- Header Section Start -->
-<header id="header-sticky" class="header-1">
+<div class="header-top-section">
+    <div class="container-fluid">
+        <div class="header-top-wrapper">
+            <span>
+                <i class="fa-solid fa-envelope"></i>
+                <a href="mailto:{{ theme_option('company_email') }}">{{ theme_option('company_email') }}</a>
+            </span>
+            <h6>Chào mừng bạn đến với {{ theme_option('company_name') }}</h6>
+            <span>
+                <i class="fa-solid fa-phone-volume"></i>
+                <a href="tel:{{ theme_option('company_phone') }}">{{ theme_option('company_phone') }}</a>
+            </span>
+        </div>
+    </div>
+</div>
+
+<header id="header-sticky" class="header-1 header-2">
     <div class="container-fluid">
         <div class="mega-menu-wrapper">
             <div class="header-main">
                 <div class="logo">
                     <a href="{{ BaseHelper::getHomepageUrl() }}" class="header-logo">
-                    @if ($logo = theme_option('logo'))
-                        {{ RvMedia::image($logo, theme_option('site_title')) }}
-                    @endif
+                        @if ($logo = theme_option('logo'))
+                            {{ RvMedia::image($logo, theme_option('site_title')) }}
+                        @endif
                     </a>
-                     <a href="{{ BaseHelper::getHomepageUrl() }}" class="header-logo-2">
-                    @if ($logo = theme_option('logo'))
-                        {{ RvMedia::image($logo, theme_option('site_title')) }}
-                    @endif
+                    <a href="{{ BaseHelper::getHomepageUrl() }}" class="header-logo-2">
+                        @if ($logo = theme_option('logo'))
+                            {{ RvMedia::image($logo, theme_option('site_title')) }}
+                        @endif
                     </a>
                 </div>
                 <div class="mean__menu-wrapper">
                     <div class="main-menu">
                         <nav id="mobile-menu">
                             {!!
-                            Menu::renderMenuLocation('main-menu', [
-                                'options' => ['id' => 'mobile-menu'],
-                                'view'    => 'main-menu-mobile',
-                            ])
-                        !!}
+Menu::renderMenuLocation('main-menu', [
+    'options' => ['id' => 'mobile-menu'],
+    'view' => 'main-menu-mobile',
+])
+                    !!}
                         </nav>
                     </div>
                 </div>
@@ -118,7 +180,7 @@
                     <div class="header__hamburger my-auto">
                         <div class="sidebar__toggle">
                             <div class="header-bar">
-                                <img src="/img/dot.svg" alt="img">
+                                <img src="assets/img/home-1/dot.svg" alt="img">
                             </div>
                         </div>
                     </div>

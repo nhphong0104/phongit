@@ -1,45 +1,62 @@
-<div class="banner_section full_screen staggered-animation-wrap">
-    <div id="carouselExampleControls" class="carousel slide carousel-fade light_arrow carousel_style2" data-ride="carousel">
-        <div class="carousel-inner">
-            @foreach($sliders->loadMissing('metadata') as $slider)
-                @php
-                    $tabletImage = $slider->getMetaData('tablet_image', true) ?: $slider->image;
-                    $mobileImage = $slider->getMetaData('mobile_image', true) ?: $tabletImage;
-                @endphp
-                <div @class([
-                    'carousel-item background_bg overlay_bg_50',
-                    'active' => $loop->first,
-                ]) data-img-src="{{ RvMedia::getImageUrl($slider->image, null, false, RvMedia::getDefaultImage()) }}"
-                    @if ($tabletImage) data-tablet-img-src="{{ RvMedia::getImageUrl($tabletImage, null, false, RvMedia::getDefaultImage()) }}" @endif
-                    @if ($mobileImage) data-mobile-img-src="{{ RvMedia::getImageUrl($mobileImage, null, false, RvMedia::getDefaultImage()) }}" @endif>
-                    <div class="banner_slide_content banner_content_inner">
-                        <div class="container">
-                            <div class="row justify-content-center">
-                                <div class="col-lg-8 col-md-10 @if ($collapsingProductCategories) offset-lg-2 offset-md-1 @endif">
-                                    <div class="banner_content text_white text-center">
-                                        @if ($slider->getMetaData('sub_title', true))
-                                            <h5 class="mb-3 bg_strip staggered-animation text-uppercase" data-animation="fadeInDown"
-                                                data-animation-delay="0.2s">{{ $slider->getMetaData('sub_title', true) }}</h5>
-                                        @endif
-                                        @if ($slider->title)
-                                            <h2 class="staggered-animation" data-animation="fadeInDown" data-animation-delay="0.3s">{{ $slider->title }}</h2>
-                                        @endif
-                                        @if ($slider->description)
-                                            <p class="staggered-animation" data-animation="fadeInUp" data-animation-delay="0.4s">{{ $slider->description }}</p>
-                                        @endif
-                                        @if ($slider->link)
-                                            <a class="btn btn-white staggered-animation" href="{{ $slider->link }}" data-animation="fadeInUp"
-                                                data-animation-delay="0.5s">{!! BaseHelper::clean($slider->getMetaData('button_text', true) ?: __('Shop Now')) !!}</a>
-                                        @endif
+<section class="tp-slider-area p-relative z-index-1 fix">
+    <div class="tp-slider-active-4 khaki-bg"
+         data-loop="{{ $shortcode->is_loop == 'yes' }}"
+         data-autoplay="{{ $shortcode->is_autoplay == 'yes' }}"
+         data-autoplay-speed="{{ in_array($shortcode->autoplay_speed, [2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000]) ? $shortcode->autoplay_speed : 5000 }}"
+    >
+        @foreach ($sliders as $slider)
+            @php
+                $title = $slider->title;
+                $description = $slider->description;
+            @endphp
+
+            <div class="tp-slider-item-4 tp-slider-height-4 p-relative khaki-bg d-flex align-items-center" style="background-color: {{ $slider->getMetaData('background_color', true) }}">
+                <div class="tp-slider-thumb-4">
+                    @include(Theme::getThemeNamespace('partials.shortcodes.simple-slider.includes.image', ['slider' => $slider, $loop->index ? ['loading' => 'lazy'] : ['loading' => 'eager']]))
+                    <div class="tp-slider-thumb-4-shape">
+                        <span class="tp-slider-thumb-4-shape-1"></span>
+                        <span class="tp-slider-thumb-4-shape-2"></span>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-xl-6 col-lg-6 col-md-8">
+                            <div class="tp-slider-content-4 p-relative z-index-1">
+                                @if($description)
+                                    <span @if($fontFamily = $shortcode->font_family_of_description) style="--tp-ff-charm: '{{ $fontFamily }}'" @endif>
+                                        {!! BaseHelper::clean($description) !!}
+                                    </span>
+                                @endif
+                                @if ($title)
+                                    <h3 class="tp-slider-title-4" @style(["font-size: {$shortcode->title_font_size}px" => $shortcode->title_font_size])>{!! BaseHelper::clean($title) !!}</h3>
+                                @endif
+                                @if($buttonLabel = $slider->getMetaData('button_label', true))
+                                    <div class="tp-slider-btn-4">
+                                        <a href="{{ $slider->url }}" class="tp-btn tp-btn-border tp-btn-border-white">
+                                            {!! BaseHelper::clean($buttonLabel) !!}
+                                        </a>
                                     </div>
-                                </div>
+                                @endif
                             </div>
                         </div>
                     </div>
                 </div>
-            @endforeach
-        </div>
-        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev"><i class="ion-chevron-left"></i></a>
-        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next"><i class="ion-chevron-right"></i></a>
+            </div>
+        @endforeach
     </div>
-</div>
+
+    <div class="tp-slider-arrow-4"></div>
+
+    <div class="tp-slider-nav-wrapper d-none">
+        <div class="container">
+            <div class="tp-slider-nav">
+                <div class="tp-slider-nav-active">
+                    @foreach ($sliders as $slider)
+                        <div class="tp-slider-nav-item d-flex align-items-center"></div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

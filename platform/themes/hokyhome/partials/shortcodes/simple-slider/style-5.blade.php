@@ -1,62 +1,71 @@
-<!-- START SECTION BANNER -->
-<div class="mt-4 staggered-animation-wrap">
-	<div class="custom-container">
-    	<div class="row">
-        	<div class="@if ($collapsingProductCategories) col-lg-7 offset-lg-3 @else col-lg-9 @endif">
-            	<div class="banner_section shop_el_slider">
-                    <div id="carouselExampleControls" class="carousel slide carousel-fade light_arrow" data-ride="carousel">
-                        <div class="carousel-inner">
-                            @foreach($sliders->loadMissing('metadata') as $slider)
-                                @php
-                                    $tabletImage = $slider->getMetaData('tablet_image', true) ?: $slider->image;
-                                    $mobileImage = $slider->getMetaData('mobile_image', true) ?: $tabletImage;
-                                @endphp
-                                <div @class([
-                                    'carousel-item background_bg',
-                                    'active' => $loop->first,
-                                ]) data-img-src="{{ RvMedia::getImageUrl($slider->image, null, false, RvMedia::getDefaultImage()) }}"
-                                    @if ($tabletImage) data-tablet-img-src="{{ RvMedia::getImageUrl($tabletImage, null, false, RvMedia::getDefaultImage()) }}" @endif
-                                    @if ($mobileImage) data-mobile-img-src="{{ RvMedia::getImageUrl($mobileImage, null, false, RvMedia::getDefaultImage()) }}" @endif>
-                                    <div class="banner_slide_content banner_content_inner">
-                                        <div class="col-lg-7 col-10">
-                                            <div class="banner_content3 overflow-hidden">
-                                                @if ($slider->getMetaData('sub_title', true))
-                                                    <h5 class="mb-3 staggered-animation font-weight-light" data-animation="slideInLeft"
-                                                        data-animation-delay="0.5s">{{ $slider->getMetaData('sub_title', true) }}</h5>
-                                                @endif
-                                                @if ($slider->title)
-                                                    <h2 class="staggered-animation" data-animation="slideInLeft" data-animation-delay="1s">{{ $slider->title }}</h2>
-                                                @endif
-                                                @if ($slider->description)
-                                                    <h3 class="staggered-animation mb-4 product-price" data-animation="slideInLeft"
-                                                        data-animation-delay="1.2s">{{ $slider->description }}</h3>
-                                                @endif
-                                                @if ($slider->link)
-                                                    <a class="btn btn-fill-out btn-radius staggered-animation text-uppercase"
-                                                        href="{{ $slider->link }}" data-animation="slideInLeft"
-                                                        data-animation-delay="1.5s">{!! BaseHelper::clean($slider->getMetaData('button_text', true) ?: __('Shop Now')) !!}</a>
-                                                @endif
+<section class="tp-slider-area p-relative z-index-1 fix">
+    <div class="tp-slider-active-5 swiper-container"
+         data-loop="{{ $shortcode->is_loop == 'yes' }}"
+         data-autoplay="{{ $shortcode->is_autoplay == 'yes' }}"
+         data-autoplay-speed="{{ in_array($shortcode->autoplay_speed, [2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000]) ? $shortcode->autoplay_speed : 5000 }}"
+    >
+        <div class="swiper-wrapper">
+            @foreach($sliders as $slider)
+                @php
+                    $title = $slider->title;
+                    $buttonLabel = $slider->getMetaData('button_label', true);
+                @endphp
+
+                <div class="tp-slider-item-5 scene tp-slider-height-5 swiper-slide d-flex align-items-center" style="background-color: #F3F3F3">
+                    <div class="tp-slider-shape-5">
+                        @foreach(range(1, 4) as $i)
+                            @if($shape = $shortcode->{"shape_$i"})
+                                <div class="tp-slider-shape-5-{{ $i }}">
+                                    {{ RvMedia::image($shape, $slider->title, attributes: ['class' => 'layer', 'data-depth' => '0.2', 'loading' => 'lazy']) }}
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                    <div class="container">
+                        @if($title || $buttonLabel)
+                            <div class="row align-items-center">
+                                <div class="col-xxl-7 col-xl-7 col-lg-6">
+                                    <div class="tp-slider-content-5 p-relative z-index-1">
+                                        @if($title)
+                                            <h3 class="tp-slider-title-5" @style(["font-size: {$shortcode->title_font_size}px" => $shortcode->title_font_size])>
+                                                {!! BaseHelper::clean($title) !!}
+                                            </h3>
+                                        @endif
+
+                                        @if($buttonLabel)
+                                            <div class="tp-slider-btn-5">
+                                                <a href="{{ $slider->link }}" class="tp-btn-green">
+                                                    {!! BaseHelper::clean($buttonLabel) !!}
+                                                </a>
                                             </div>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-xxl-5 col-xl-5 col-lg-6">
+                                    <div class="tp-slider-thumb-wrapper-5 p-relative">
+                                        @if($shape = $shortcode->shape_5)
+                                            <div class="tp-slider-thumb-shape-5 one d-none d-sm-block">
+                                                {{ RvMedia::image($shape, $slider->title, attributes: ['data-depth' => '0.1', 'class' => 'layer offer', 'loading' => 'lazy']) }}
+                                            </div>
+                                        @endif
+                                        <div class="tp-slider-thumb-5 main-img">
+                                            @php $sliderAttributes = ['data-depth' => '0.2', 'class' => 'layer', 'loading' => $loop->index ? 'lazy' : 'eager']; @endphp
+                                            @include(Theme::getThemeNamespace('partials.shortcodes.simple-slider.includes.image', compact('slider')))
+                                            <span class="tp-slider-thumb-5-gradient"></span>
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach
-                        </div>
-                        <ol class="carousel-indicators indicators_style3">
-                            @foreach($sliders as $slider)
-                                <li data-target="#carouselExampleControls" data-slide-to="{{ $loop->index }}" @if ($loop->first) class="active" @endif></li>
-                            @endforeach
-                        </ol>
+                            </div>
+                        @else
+                            <div class="tp-slider-thumb-5 main-img">
+                                @php $sliderAttributes = ['data-depth' => '0.2', 'class' => 'layer', 'loading' => $loop->index ? 'lazy' : 'eager']; @endphp
+                                @include(Theme::getThemeNamespace('partials.shortcodes.simple-slider.includes.image', compact('slider')))
+                                <span class="tp-slider-thumb-5-gradient"></span>
+                            </div>
+                        @endif
                     </div>
                 </div>
-            </div>
-            @if (is_plugin_active('ads'))
-                <div class="col-lg-2 d-none d-lg-block">
-                    {!! AdsManager::displayAds($shortcode->ads_1, ['class' => 'shop_banner2 el_banner1'], ['class' => 'hover_effect1']) !!}
-                    {!! AdsManager::displayAds($shortcode->ads_2, ['class' => 'shop_banner2 el_banner2'], ['class' => 'hover_effect1']) !!}
-                </div>
-            @endif
+            @endforeach
         </div>
     </div>
-</div>
-<!-- END SECTION BANNER -->
+</section>

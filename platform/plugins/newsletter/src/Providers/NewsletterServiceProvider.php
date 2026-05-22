@@ -52,14 +52,13 @@ class NewsletterServiceProvider extends ServiceProvider implements DeferrablePro
 
         DashboardMenu::default()->beforeRetrieving(function (): void {
             DashboardMenu::make()
-                ->registerItem(
-                    DashboardMenuItem::make()
-                        ->id('cms-plugins-newsletter')
-                        ->priority(430)
-                        ->name('plugins/newsletter::newsletter.name')
-                        ->icon('ti ti-mail')
-                        ->route('newsletter.index')
-                );
+                ->registerItem([
+                        'id' => 'cms-plugins-newsletter',
+                        'priority' => 430,
+                        'name' => 'plugins/newsletter::newsletter.name',
+                        'icon' => 'ti ti-mail',
+                        'route' => 'newsletter.index'
+                ]);
         });
 
         PanelSectionManager::default()->beforeRendering(function (): void {
