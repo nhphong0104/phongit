@@ -6,11 +6,14 @@ use Botble\Base\Forms\FieldOptions\TextFieldOption;
 use Botble\Base\Forms\Fields\NumberField;
 use Botble\Base\Forms\Fields\SelectField;
 use Botble\Base\Forms\Fields\TextField;
+use Botble\Base\Forms\Fields\TreeCategoryField;
+use Botble\Blog\Models\Category;
 use Botble\Shortcode\Compilers\Shortcode as ShortcodeCompiler;
 use Botble\Shortcode\Facades\Shortcode;
 use Botble\Shortcode\Forms\ShortcodeForm;
 use Botble\Theme\Facades\Theme;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Arr;
 
 app()->booted(function () {
     if (! is_plugin_active('blog')) {
@@ -41,14 +44,37 @@ app()->booted(function () {
     Shortcode::setPreviewImage('blog-posts', Theme::asset()->url('images/shortcodes/blog-posts.png'));
 
     Shortcode::setAdminConfig('blog-posts', function (array $attributes) {
+
+        $categories = Category::query()->wherePublished()->pluck('name', 'id')->all();
+        $categoryIds = Arr::get($attributes, 'category_id');
+
+        if (! is_array($categoryIds)) {
+            $categoryIds = $categoryIds ? explode(',', $categoryIds) : null;
+        }
         return ShortcodeForm::createFromArray($attributes)
             ->withLazyLoading()
             ->columns()
+            ->add(
+                'subtitle',
+                TextField::class,
+                TextFieldOption::make()->label(__('Subtitle'))->colspan(2),
+            )
             ->add(
                 'title',
                 TextField::class,
                 TextFieldOption::make()->label(__('Title'))->colspan(2),
             )
+            ->add(
+                'category_id',
+                SelectField::class,
+                SelectFieldOption::make()
+                    ->label(__('Choose categories'))
+                    ->choices($categories)
+                    ->selected($categoryIds)
+                    ->searchable()
+                    ->multiple()
+                    ->colspan(2),
+                )
             ->add(
                 'type',
                 SelectField::class,
@@ -60,6 +86,19 @@ app()->booted(function () {
                         'popular' => __('Popular'),
                     ])
                     ->defaultValue('recent')
+                    ->colspan(2),
+            )
+            ->add(
+                'view_type',
+                SelectField::class,
+                SelectFieldOption::make()
+                    ->label(__('View Type'))
+                    ->choices([
+                        'blog' => __('Blog'),
+                        'services' => __('Services'),
+                        'projects' => __('Projects'),
+                    ])
+                    ->defaultValue('blog')
                     ->colspan(2),
             )
             ->add(
@@ -86,4 +125,6 @@ app()->booted(function () {
                     ->helperText(__('Leave empty to link to the blog page'))
             );
     });
+
+    
 });

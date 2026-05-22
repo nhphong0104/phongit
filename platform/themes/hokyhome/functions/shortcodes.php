@@ -9,8 +9,8 @@ use Botble\Base\Forms\Fields\MediaImageField;
 use Botble\Base\Forms\Fields\TextareaField;
 use Botble\Base\Forms\Fields\TextField;
 use Botble\Theme\Supports\ThemeSupport;
-use Botble\Shortcode\Compilers\Shortcode;
-use Botble\Shortcode\Compilers\ShortcodeCompiler;
+use Botble\Shortcode\Compilers\Shortcode as ShortcodeCompiler;
+use Botble\Shortcode\Facades\Shortcode;
 use Botble\Shortcode\Forms\ShortcodeForm;
 use Botble\Theme\Facades\Theme;
 
@@ -20,7 +20,7 @@ app()->booted(function () {
 });
 
 if (is_plugin_active('newsletter')) {
-    add_shortcode('newsletter-form', __('Newsletter Form'), __('Newsletter Form'), function ($shortCode) {
+    Shortcode::register('newsletter-form', __('Newsletter Form'), __('Newsletter Form'), function ($shortCode) {
         return Theme::partial('shortcodes.newsletter-form', [
             'title' => $shortCode->title,
             'description' => $shortCode->description,
@@ -28,18 +28,18 @@ if (is_plugin_active('newsletter')) {
         ]);
     });
 
-    shortcode()->setAdminConfig('newsletter-form', function ($attributes) {
+    Shortcode::setAdminConfig('newsletter-form', function ($attributes) {
         return Theme::partial('shortcodes.newsletter-form-admin-config', compact('attributes'));
     });
 }
 
-shortcode()->register('about', __('About'), __('About'), function (ShortcodeCompiler $shortcode) {
+Shortcode::register('about', __('About'), __('About'), function (ShortcodeCompiler $shortcode) {
         return Theme::partial('shortcodes.about.index', compact('shortcode'));
     });
 
-    shortcode()->setPreviewImage('about', Theme::asset()->url('images/shortcodes/about.png'));
+    Shortcode::setPreviewImage('about', Theme::asset()->url('images/shortcodes/about.png'));
 
-    shortcode()->setAdminConfig('about', function (array $attributes) {
+    Shortcode::setAdminConfig('about', function (array $attributes) {
         return ShortcodeForm::createFromArray($attributes)
             ->withLazyLoading()
             ->columns()
@@ -76,6 +76,42 @@ shortcode()->register('about', __('About'), __('About'), function (ShortcodeComp
                     ->label(__('Description'))
                     ->colspan(2)
             )
+            ->add(
+                'feature_1',
+                TextField::class,
+                TextFieldOption::make()
+                    ->label(__('Text Feature 1'))
+                    ->colspan(2)
+            )
+            ->add(
+                'feature_2',
+                TextField::class,
+                TextFieldOption::make()
+                    ->label(__('Text Feature 2'))
+                    ->colspan(2)
+            )
+            ->add(
+                'feature_3',
+                TextField::class,
+                TextFieldOption::make()
+                    ->label(__('Text Feature 3'))
+                    ->colspan(2)
+            )
+            ->add(
+                'feature_4',
+                TextField::class,
+                TextFieldOption::make()
+                    ->label(__('Text Feature 4'))
+                    ->colspan(2)
+            )
+            ->add(
+                'feature_5',
+                TextField::class,
+                TextFieldOption::make()
+                    ->label(__('Text Feature 5'))
+                    ->colspan(2)
+            )
+
             ->add(
                 'action_label',
                 TextField::class,
